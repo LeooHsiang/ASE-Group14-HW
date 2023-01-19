@@ -34,7 +34,7 @@ class Sym():
         return self.mode
 
 
-    def div(self, x: str) -> float:
+    def div(self, x = 0) -> float:
         """
             Method that calculates the entropy.
         """
