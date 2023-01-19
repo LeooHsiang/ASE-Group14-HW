@@ -53,7 +53,7 @@ def main(options, help, funs, k, saved, fails):
                 for k,v in saved.items():
                     options[k] = v
                 Seed = options.seed
-                if funs[what] == false:
+                if funs[what] == 'false':
                     fails = fails + 1
                     print("❌ fail:", what)
                 else:
