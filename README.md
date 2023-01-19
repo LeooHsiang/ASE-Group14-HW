@@ -2,7 +2,8 @@
 
 <h3 align="center">
 
-  ![Build event parameter](https://github.com/nakraft/CSC510/actions/workflows/main.yml/badge.svg?event=push) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7033333.svg)](https://doi.org/10.5281/zenodo.7033333)
+  ![Build event parameter](https://github.com/nakraft/CSC510/actions/workflows/main.yml/badge.svg?event=push)
+  [![DOI](https://zenodo.org/badge/590073237.svg)](https://zenodo.org/badge/latestdoi/590073237)
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   
 </h3>
