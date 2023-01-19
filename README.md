@@ -2,7 +2,7 @@
 
 <h3 align="center">
 
-  ![Build event parameter](https://github.com/nakraft/CSC510/actions/workflows/main.yml/badge.svg?event=push)
+  [![Build](https://github.com/LeooHsiang/ASE-Group14-HW/actions/workflows/python-app.yml/badge.svg)](https://github.com/LeooHsiang/ASE-   Group14-HW/actions/workflows/python-app.yml)
   [![DOI](https://zenodo.org/badge/590073237.svg)](https://zenodo.org/badge/latestdoi/590073237)
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   
