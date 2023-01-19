@@ -13,11 +13,13 @@ help = "USAGE: py helper.py [OPTIONS] [-g ACTION]\n\n\
 
 arg = sys.argv[1:]
 
-the = {}
-pattern = re.compile("\n[%s]+[-][%S]+[%s]+[-][-]([%S]+)[^\n]+= ([%S]+)")
-for match in pattern.finditer(help):
-    k, v = match.group(1, 2)
-    the[k] = s.coerce(v)
+def settings(s, t):
+    t = {}
+    s = re.compile("\n[%s]+[-][%S]+[%s]+[-][-]([%S]+)[^\n]+= ([%S]+)")
+    for match in s.finditer(help):
+        k, v = match.group(1, 2)
+        t[k] = s.coerce(v)
+    return t
 
 #check if int and convert to string
 def coerce(s):
@@ -36,4 +38,28 @@ def cli(options):
         options[k] = s.coerce(v)
     return options     
 
-the = cli(the)
+def main(options, help, funs, k, saved, fails):
+    saved,fails={}, 0
+    for k, v in cli(settings(help)).items():
+        options[k] = v
+        saved[k] = v
+    
+    if options.help:
+        print(help)
+    
+    else:
+        for what, fun in funs.items():
+            if options.go == "all" or what == options.go:
+                for k,v in saved.items():
+                    options[k] = v
+                Seed = options.seed
+                if funs[what]()== false:
+                    fails = fails + 1
+                    print("❌ fail:", what)
+                else:
+                    print("✅ pass:", what)
+
+
+    # for k,v in pairs(_ENV) do 
+    # if not b4[k] then print( fmt("#W ?%s %s",k,type(v)) ) end end 
+    # os.exit(fails) end 
