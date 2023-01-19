@@ -1,0 +1,20 @@
+cff-version: 1.0.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Cheerla"
+  given-names: "Sanjana"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+- family-names: "Hsiang"
+  given-names: "Leo"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+- family-names: "Kraft"
+  given-names: "Natalie"
+  orcid: "https://orcid.org/0000-0002-5919-5653"
+- family-names: "Ramaswamy"
+  given-names: "Ashrita"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "CSC591 - Automated Software Engineering HomeWork Group 14"
+version: 1.0.0
+doi: 
+date-released: 2023-01-19
+url: "https://github.com/LeooHsiang/ASE-Group14-HW"
