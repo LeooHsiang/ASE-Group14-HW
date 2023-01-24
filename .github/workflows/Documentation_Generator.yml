@@ -1,0 +1,42 @@
+name: Generate Documentation with Sphinx  
+  
+on:  
+  push:  
+    branches:  
+      - main  
+    paths:  
+      - '**.py'  
+
+env:
+  MODULE_PATHS: codebase test
+  
+jobs:  
+  doc-gen:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout  
+        uses: actions/checkout@v3  
+      - name: Setup Python  
+        uses: actions/setup-python@v2  
+        with:  
+          python-version: 3.10.0  
+          architecture: x64  
+          cache: 'pip'  
+      - name: Install dependencies for sphinx
+        run: pip install -r requirements.txt  
+      - name: Generate documentation  
+        run: |
+          chmod +x ./docs_generator.sh
+          ./docs_generator.sh ${{ env.MODULE_PATHS }}  
+      - name: Commit changes
+        run: | 
+          git config --global user.name "LeooHsiang"
+          git config --global user.email "yuchuanhsiang@gmail.com"
+          git add .
+          git commit -m "Update documentation" -a || true
+          git push
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build
