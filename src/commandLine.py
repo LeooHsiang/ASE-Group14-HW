@@ -1,64 +1,47 @@
-import sys
-import re
-from strings import strings as s
+from test import oo
+from test import test_num
+from test import test_sym
+from test import test_rand
+from string_util import settings
+from string_util import cli
+from test import *
+import config
 
-'''Defines command line arguments'''
-
-#default values
-help = "USAGE: py helper.py [OPTIONS] [-g ACTION]\n\n\
--d --dump   on crash, dump stack = false\n\
--g --go    start-up action = data\n\
--h --help   show help   = false\n\
--s --seed   random number seed  = 937162211"
-
-arg = sys.argv[1:]
-
-def settings(s, t):
-    t = {}
-    s = re.compile("\n[%s]+[-][%S]+[%s]+[-][-]([%S]+)[^\n]+= ([%S]+)")
-    for match in s.finditer(help):
-        k, v = match.group(1, 2)
-        t[k] = s.coerce(v)
-    return t
-
-#check if int and convert to string
-def coerce(s):
-    return int(s) if s.isdigit() else s
-
-"""
-Reads in default options and stores in configuration dictionary "the"
-t = dictionary of options
-"""
-def cli(options):
-    for k, v in options.items():
-        v = str(v)
-        for n, x in enumerate(arg):
-            if x == "-" + k[0] or x == "--" + k:
-                v = v == "false" and "true" or v == "true" and "false" or arg[n + 1]
-        options[k] = s.coerce(v)
-    return options     
-
-def main(options, help, funs, k, saved, fails):
-    saved,fails={}, 0
+def main(options, help, funs, saved = {}, fails = 0):
+    
     for k, v in cli(settings(help)).items():
         options[k] = v
         saved[k] = v
-    
-    if options.help:
+
+    if options["help"]:
         print(help)
-    
     else:
-        for what, fun in funs.items():
-            if options.go == "all" or what == options.go:
+        for what in funs:
+            if options["go"] == "all" or what == options["go"]:
                 for k,v in saved.items():
                     options[k] = v
-                Seed = options.seed
-                if funs[what] == 'false':
+                if funs[what]() == False:
                     fails = fails + 1
                     print("❌ fail:", what)
                 else:
                     print("✅ pass:", what)
+    exit(fails)
+    
+egs = {}
+def eg(key,string,fun):
+  global egs
+  egs[key]=fun
+  config.help = config.help + ("  -g  %s\t%s\n" % (key,string))
+  
+eg("the", "show settings", lambda: oo(config.the))
 
+eg("rand", "generate, reset, regenerate same", test_rand)
+
+eg("sym", "check syms", test_sym)
+
+eg("num", "check nums", test_num)
+
+main(config.the, config.help, egs)
 
     # for k,v in pairs(_ENV) do 
     # if not b4[k] then print( fmt("#W ?%s %s",k,type(v)) ) end end 
