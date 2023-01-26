@@ -53,9 +53,10 @@ def test_read_data_csv():
     data.cols.x[1].at==1 and \
     len(data.cols.x)==4
 
-def test_stats_data(): 
+def test_stats(): 
     data = Data(config.the['file'])
     d = {'y': data.cols.y, 'x': data.cols.x}
     for k, cols in d.items():
-        print(k + 'mid'+ str(data.stats('mid', cols, 2)))
-        print(''+ 'div' +str(data.stats('div', cols, 2)))
+        print(k + ' mid '+ str(data.stats('mid', cols, 2)))
+        print(''+ ' div ' +str(data.stats('div', cols, 2)))
+    return True

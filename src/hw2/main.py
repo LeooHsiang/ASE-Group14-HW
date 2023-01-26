@@ -1,5 +1,6 @@
-from test import test_rand, test_read_csv, test_read_data_csv, test_stats_data
+from test import test_rand, test_read_csv, test_read_data_csv
 from test import show_settings, test_nums, test_syms
+from test import test_stats
 from string_util import settings
 from string_util import cli
 from test import *
@@ -48,6 +49,6 @@ eg("num", "check nums", test_nums)
 
 eg("csv","read from csv", test_read_csv)
 eg("data","read DATA csv", test_read_data_csv)
-# eg("stats","stats from DATA", test_stats_data)
+eg("stats","stats from DATA", test_stats)
 
 main(config.the, config.help, egs)

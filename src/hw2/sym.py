@@ -60,7 +60,7 @@ class Sym():
                 e = e + fun(n / self.n)
         return 0 - e
 
-    def rnd(self, x): 
+    def rnd(self, x, n): 
         """
             Method that returns x unchanged. 
         """

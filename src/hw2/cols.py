@@ -1,7 +1,5 @@
-from logging import NullHandler
 from num import Num
 from sym import Sym
-from row import Row
 import re
 
 class Cols:

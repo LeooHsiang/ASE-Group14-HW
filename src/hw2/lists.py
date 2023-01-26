@@ -14,14 +14,12 @@ class Lists():
         return u
 
     # map function `fun`(k,v) over list (skip nil results)
-    def kap(t,fun, u={}):
-        u={}
-        for k,v in enumerate(t):
-            v,k=fun(k,v)
-            if not k:
-                u[len(u)]=v
-            else:
-                u[k]=v
+    def kap(t, fun):
+        u = {}
+        for v in t:
+            k = t.index(v)
+            v, k = fun(k,v) 
+            u[k or len(u)] = v
         return u
 
     # sorted by `fun` (default= `<`)

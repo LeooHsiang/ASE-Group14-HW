@@ -15,16 +15,12 @@ class Data:
     rows = list of rows
     '''
     def __init__(self, src):
-       self.rows = []
-       self.cols = None
-       fun = lambda x: self.add(x)
-       if "str" in str(type(src)):
-            csv(src, fun)
-       else:
-            if src:
-                Lists.map(src, fun)
-            else:
-                Lists.map({}, fun)
+        self.rows = list()
+        self.cols = None
+        if type(src) == str:
+            csv(src, self.add)
+        else:
+            map(src, self.add)
 
     def add(self, t):
         '''
@@ -43,9 +39,14 @@ class Data:
         Lists.map(init or [], self.add)
         return data
 
-    def stats(self, cols,nplaces,what="mid"):
-        def fun(k,col):
-            return col.rnd((col,what)(),nplaces), col.txt
-        return Lists.kap(fun,cols or self.cols.y)
+    def stats(self, what, cols, nPlaces):
+        def fun(_, cols):
+            if what == 'div':
+                val = cols.div()
+            else:
+                val = cols.mid()
+            return cols.rnd(val, nPlaces),cols.txt
+        return Lists.kap(cols or self.cols.y, fun)
+        
 
 

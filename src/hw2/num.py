@@ -1,6 +1,5 @@
 import math
-import random
-import re
+from util import rnd
 
 class Num():
     """
@@ -71,4 +70,4 @@ class Num():
         if x == "?": 
             return x
         else: 
-            return math.round(x, n)
+            return rnd(x, n)
