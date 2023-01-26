@@ -1,6 +1,6 @@
-from src.cols import Cols
-from src.row import Row
-from src.utilities import Utilities
+from cols import Cols
+from row import Row
+from utilities import Utilities
 import math
 
 class Data:
