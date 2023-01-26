@@ -1,6 +1,6 @@
 from src.cols import Cols
 from src.row import Row
-from src.utilities import kap, map, csv
+from src.util import kap, map, csv
 import math
 
 class Data:
