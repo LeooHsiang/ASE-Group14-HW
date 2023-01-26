@@ -1,7 +1,7 @@
 from logging import NullHandler
-from src.num import Num
-from src.sym import Sym
-from src.row import Row
+from num import Num
+from sym import Sym
+from row import Row
 import re
 
 class Cols:

@@ -6,7 +6,7 @@ class Num():
     """
     Summarizes a stream of numbers. 
     """
-    def __init__(self, at, txt) -> None:
+    def __init__(self, at: int = 0, txt: str = "") -> None:
         super().__init__()
         # representing column position
         if at: 
@@ -23,12 +23,12 @@ class Num():
         self.m2 = 0
         self.lo = float('inf')
         self.hi = float('-inf')
-        if self.txt.contains("-$"): 
+        if self.txt.find("-$"): 
             self.w = -1
         else: 
             self.w = 1
 
-    def add(self, n) -> None:
+    def add(self, n: float) -> None:
         """
         Updates values needed for standard deviation
         """

@@ -1,6 +1,7 @@
-from src.cols import Cols
-from src.row import Row
-from src.util import kap, map, csv
+from cols import Cols
+from row import Row
+from lists import *
+from string_util import *
 import math
 
 class Data:
@@ -48,6 +49,6 @@ class Data:
         '''
         def fun(k, col):
             return col.rnd((col,what)(),nPlaces), col.txt
-        return kap(cols or self.cols.y, fun)
+        return lists.kap(cols or self.cols.y, fun)
 
 

@@ -1,6 +1,7 @@
 import re
 import sys
 import lists
+import io
 
 
     
@@ -76,14 +77,19 @@ def o(self, t, isKeys):
         return sorted(u)
 
 
-def csv(self, sFilename,fun):
-    src,s,t  = input(sFilename)
+def csv(sFilename,fun):
+    """
+        call `fun` on rows (after coercing cell text)
+        :param sFilename: String of the file to read
+        :param fun: function to call per each row
+    """
+    f = io.open(sFilename)
     while True:
-        s = input()
+        s = f.readline()
         if s:
-            t={}; 
-            for s1 in re.match("([^,]+)"):
-                t[1+len(t)]=coerce(s1)
+            t=[]
+            for s1 in re.findall("([^,]+)" ,s):
+                t.append(coerce(s1))
             fun(t)
         else:
-            return 
+            return f.close()

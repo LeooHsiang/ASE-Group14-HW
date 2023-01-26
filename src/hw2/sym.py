@@ -7,7 +7,7 @@ class Sym():
     """
     Stores details related to symbols in a CSV file
     """
-    def __init__(self, at, txt) -> None:
+    def __init__(self, at: int = 0, txt: str = "") -> None:
         super().__init__()
         # representing column position
         if at: 
