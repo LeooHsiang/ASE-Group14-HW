@@ -1,7 +1,6 @@
 from logging import NullHandler
-from codes.num import Num
-from codes.sym import Sym
-import codes.utilities as u
+from src.num import Num
+from src.sym import Sym
 import re
 
 class Cols:
@@ -24,7 +23,7 @@ class Cols:
         self.y = []
         self.klass = None
         for n, s in enumerate(t):
-            col = Num(n, s) if s[0].isupper() else Sym(c, s)
+            col = Num(n, s) if s[0].isupper() else Sym(n, s)
             self.all.append(col)
             if s[-1] != 'X':
                 if s[-1] == '!':
