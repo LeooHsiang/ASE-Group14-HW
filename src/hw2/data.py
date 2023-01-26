@@ -34,20 +34,20 @@ class Data:
             self.cols = Cols(t)
 
     def clone(self, init, data):
-        data = DATA(list(self.cols.names))
+        data = Data(list(self.cols.names))
         map(init or [], self.add)
         return data
 
     def stats(self, cols, nPlaces, what="mid"):
         '''
         Shows stats for each col based on input function
-        :param places: rounding int
+        :param nPlaces: rounding int
         :param cols: list of columns
         :param what: function to apply to each column
         :return: dictionary of column stats
         '''
         def fun(k, col):
-            return col.rnd((col,what)(),nplaces), col.txt
+            return col.rnd((col,what)(),nPlaces), col.txt
         return kap(cols or self.cols.y, fun)
 
 
