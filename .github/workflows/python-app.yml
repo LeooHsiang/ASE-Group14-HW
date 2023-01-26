@@ -36,5 +36,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with test_engine
       run: |
-        python3 src/commandLine.py -g all
+        python3 src/hw1/commandLine.py -g all
      
