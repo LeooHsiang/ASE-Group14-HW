@@ -1,8 +1,8 @@
 from sym import Sym
 from num import Num
 from numerics import numerics
-from hw1.string_util import *
-import hw1.config as config
+from string_util import *
+import config as config
 
 def oo(t):
   print(t)
