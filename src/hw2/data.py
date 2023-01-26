@@ -1,6 +1,6 @@
 from cols import Cols
 from row import Row
-from lists import *
+from lists import Lists
 from string_util import *
 import math
 
@@ -15,12 +15,16 @@ class Data:
     rows = list of rows
     '''
     def __init__(self, src):
-        self.rows = []
-        self.cols = None
-        if isinstance(src, str):
-            csv(src, self.add)
-        else:
-            map(src or {},self.add) 
+       self.rows = []
+       self.cols = None
+       fun = lambda x: self.add(x)
+       if "str" in str(type(src)):
+            csv(src, fun)
+       else:
+            if src:
+                Lists.map(src, fun)
+            else:
+                Lists.map({}, fun)
 
     def add(self, t):
         '''
@@ -28,27 +32,20 @@ class Data:
         :param t: row to add
         '''
         if self.cols:
-           t = t.cells and t or Row(t)
-           self.rows.append(t)
-           self.cols.add(t)
+            t = t if "ROW" in str(type(t)) else Row(t)
+            self.rows.append(t)
+            self.cols.add(t)
         else:
             self.cols = Cols(t)
 
     def clone(self, init, data):
         data = Data(list(self.cols.names))
-        map(init or [], self.add)
+        Lists.map(init or [], self.add)
         return data
 
-    def stats(self, cols, nPlaces, what="mid"):
-        '''
-        Shows stats for each col based on input function
-        :param nPlaces: rounding int
-        :param cols: list of columns
-        :param what: function to apply to each column
-        :return: dictionary of column stats
-        '''
-        def fun(k, col):
-            return col.rnd((col,what)(),nPlaces), col.txt
-        return lists.kap(cols or self.cols.y, fun)
+    def stats(self, cols,nplaces,what="mid"):
+        def fun(k,col):
+            return col.rnd((col,what)(),nplaces), col.txt
+        return Lists.kap(fun,cols or self.cols.y)
 
 

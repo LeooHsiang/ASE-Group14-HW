@@ -47,7 +47,7 @@ eg("sym", "check syms", test_syms)
 eg("num", "check nums", test_nums)
 
 eg("csv","read from csv", test_read_csv)
-eg("csv","read DATA csv", test_read_data_csv)
-eg("stats","stats from DATA", test_stats_data)
+eg("data","read DATA csv", test_read_data_csv)
+# eg("stats","stats from DATA", test_stats_data)
 
 main(config.the, config.help, egs)

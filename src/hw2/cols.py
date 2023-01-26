@@ -7,7 +7,7 @@ import re
 class Cols:
     '''Declares a column class that holds a column of data'''
 
-    def __init__(self, t, col, cols):
+    def __init__(self, t:dict):
         ''' 
         inits Cols with name of col
         :param names: (str) first row containing names of the columns
@@ -30,10 +30,9 @@ class Cols:
                 if re.findall("!$", s):
                     self.klass = col
                 self.y.append(col) if re.findall("[!+-]$", s) else self.x.append(col)
-
-    def add(self, row: Row):
-        for _, t in enumerate(self.x, self.y):
+                
+    def add(self, row):
+        for _,t in enumerate([self.x, self.y]):
             for _, col in enumerate(t):
                 col.add(row.cells[col.at])
-
 
