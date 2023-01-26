@@ -33,3 +33,6 @@ class lists():
         u = self.kap(t, self.function)
         t = sorted(u.keys())
         return t
+
+    def push(self, t, x):
+        self[t] = x

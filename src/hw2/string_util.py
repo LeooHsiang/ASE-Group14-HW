@@ -76,7 +76,7 @@ def o(self, t, isKeys):
         return sorted(u)
 
 
-def csv(sFilename,fun):
+def csv(self, sFilename,fun):
     src,s,t  = input(sFilename)
     while True:
         s = input()

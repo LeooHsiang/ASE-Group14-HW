@@ -25,8 +25,3 @@ class numerics():
             mult = 10 ** 3
 
         return math.floor(n * mult + 0.5) / mult
-
-
-
-
- 
