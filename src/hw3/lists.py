@@ -1,3 +1,4 @@
+import random
 
 class Lists():
     # -- Note the following conventions for `map`.
@@ -37,3 +38,11 @@ class Lists():
 
     def push(self, t, x):
         self[t] = x
+    
+    def any(self, t):
+        return t[random.randint(0,len(t))]
+    
+    def many(self,t,n):
+        u = {}
+        for i in range(1, n):
+            u[1+len(u)] = self.any(t)
