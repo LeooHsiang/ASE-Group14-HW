@@ -61,6 +61,8 @@ class Data:
         return (d/n) ** (1/self.the['p'])
 
     def around(self,row1,rows,cols):
+        rows = rows if rows else self.rows
+        cols = cols if cols else self.cols.x
         def func(row2):
             return {'row': row2, 'dist': self.dist(row1, row2, cols)}
             
@@ -68,12 +70,48 @@ class Data:
 
     def half(self,rows,cols,above):
         def project():
-            return
+            return {"row": row, "dist": cosine(dist(row, A), dist(row, B), c)}
         def dist():
-            return 
-    # def cluster():
+            return self.dist(row1, row2, cols)
+        rows = (rows if rows else self.rows)
+        some = many(rows, self.the["Sample"])
+        A = above or any(some)
+        B = self.around(A,some)[int(self.the["Far"] * len(rows)) // 1]["row"]
+        c = dist(A,B)
+
+        left, right = [], []
+
+        for n, tmp in enumerate(sort(map(rows, project), key=lambda k: k["dist"])):
+            if   n <= len(rows) // 2:
+                left.append(tmp["row"])
+                mid = tmp["row"]
+            else:
+                right.append(tmp["row"])
+        return left, right, A, B, mid, c
+
+    def cluster(self,rows,min,cols,above):
+        rows = (rows if rows else self.rows)
+        min  = min if min else len(rows) ** options["min"]
+        cols = (cols if cols else self.cols.x)
+        node = {"data": self.clone(rows)}
+
+        if len(rows) > 2 * min:
+            left, right, node.A, node.B, node.mid = self.half(rows, cols, above)
+            node.left = self.cluster(left, min, cols, node.A)
+            node.right = self.cluster(right, min, cols, node.B)
+        return node
     
-    # def sway():
+    def sway(self,rows,min,cols,above):
+        rows = (rows if rows else self.rows)
+        min  = min if min else len(rows) ** options["min"]
+        cols = (cols if cols else self.cols.x)
+        node = {"data": self.clone(rows)}
+        if len(rows) > 2 * min:
+            left, right, node.A, node.B, node.mid = self.half(rows, cols, above)
+            if self.better(node.B, node.A):
+                left, right, node.A, node.B = right, left, node.B, node.A
+            node['left'] = self.sway(left, min, cols, node.A)
+        return node
 
     def show(self, node, what, cols, nPlaces, lvl) -> None: 
         """
