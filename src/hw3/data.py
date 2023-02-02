@@ -39,10 +39,10 @@ class Data:
         Lists.map(init or [], self.add)
         return data
 
-    # def stats(self, what, cols, nPlaces, fun):
-    #     def fun(k, cols):
-    #         dict(sorted({col.txt: col.rnd(getattr(col, what)(), nplaces)
-    #     return Lists.kap(cols or self.cols.y, fun)
+    def stats(self, what, cols, nPlaces, fun):
+        def fun(k, cols):
+            return col.rnd((col,what)(),nplaces), col.txt
+        return Lists.kap(cols or self.cols.y, fun)
 
     def better(self, row1, row2, s1, s2, ys, x, y):
         s1,s2,ys = 0, 0, self.cols.y
