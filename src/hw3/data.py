@@ -47,6 +47,30 @@ class Data:
                 val = cols.mid()
             return cols.rnd(val, nPlaces),cols.txt
         return Lists.kap(cols or self.cols.y, fun)
+
+    def show(self, node, what, cols, nPlaces, lvl) -> None: 
+        """
+            Prints the tree generated from the Data:tree method
+            Notes on transition: 
+                rep(lvl) repeats the previous string lvl number of times 
+                #takes the length of the following value
+                .. concatanates two strings together 
+        """
+        if node: 
+            if lvl is None:
+                lvl = 0
+            for i in range(0, lvl): 
+                print("| ", end = "")
+            print(len(self.rows), end = "  ")
+
+            if not node.left or lvl == 0: 
+                print(self.stats(self, "mid",node.data.cols.y,nPlaces))
+            
+            # recursive call 
+            self.show(node.left, what, cols, nPlaces, lvl+1)
+            self.show(node.right, what, cols, nPlaces, lvl+1)
+
+             
         
 
 
