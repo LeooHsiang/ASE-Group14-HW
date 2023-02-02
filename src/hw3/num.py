@@ -71,3 +71,29 @@ class Num():
             return x
         else: 
             return rnd(x, n)
+
+    def norm(self, n): 
+        """
+            provides a normalized version of the numbers
+        """
+        if n == "?": 
+            return n 
+        else: 
+            return (n - self.lo) / (self.hi - self.lo + (10**-32))
+
+    def dist(self, n1, n2): 
+        if n1 == "?" and n2 == "?": 
+            return 1
+        else: 
+            n1 = self.norm(n1)
+            n2 = self.norm(n2)
+            if n1 == "?" and n2 < .5: 
+                n1 = 1
+            else: 
+                n1 = 0
+            if n2 == "?" and n1 < .5: 
+                n2 = 1
+            else: 
+                n2 = 0 
+            
+            return math.abs(n1 - n2)
