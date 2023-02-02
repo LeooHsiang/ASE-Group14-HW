@@ -39,14 +39,41 @@ class Data:
         Lists.map(init or [], self.add)
         return data
 
-    def stats(self, what, cols, nPlaces):
-        def fun(_, cols):
-            if what == 'div':
-                val = cols.div()
-            else:
-                val = cols.mid()
-            return cols.rnd(val, nPlaces),cols.txt
-        return Lists.kap(cols or self.cols.y, fun)
+    # def stats(self, what, cols, nPlaces, fun):
+    #     def fun(k, cols):
+    #         dict(sorted({col.txt: col.rnd(getattr(col, what)(), nplaces)
+    #     return Lists.kap(cols or self.cols.y, fun)
+
+    def better(self, row1, row2, s1, s2, ys, x, y):
+        s1,s2,ys = 0, 0, self.cols.y
+        for _,col in enumerate(ys):
+            x = Num.norm(row1.cells[col.at])
+            y = Num.norm(row2.cells[col.at])
+            s1 = s1 - math.exp(col.w * (x - y) / len(ys))
+            s2 = s2 - math.exp(col.w * (y - x) / len(ys))
+        return s1 / len(ys) < s2 / len(ys)
+
+    def dist(self,row1,row2,  cols, n, d):
+        n,d = 0,0
+        for _,col in enumerate(cols or i.cols.x):
+            n = n + 1
+            d = d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** self.the['p']
+        return (d/n) ** (1/self.the['p'])
+
+    def around(self,row1,rows,cols):
+        def func(row2):
+            return {'row': row2, 'dist': self.dist(row1, row2, cols)}
+            
+        return sorted(list(map(func, rows)), key=lambda k: k['dist'])
+
+    def half(self,rows,cols,above):
+        def project():
+            return
+        def dist():
+            return 
+    # def cluster():
+    
+    # def sway():
 
     def show(self, node, what, cols, nPlaces, lvl) -> None: 
         """
