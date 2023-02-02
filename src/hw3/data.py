@@ -35,16 +35,26 @@ class Data:
             self.cols = Cols(t)
 
     def clone(self, init, data):
+        '''
+        Returns a clone
+        :param init: Initial data for the clone
+        '''
         data = Data(list(self.cols.names))
         Lists.map(init or [], self.add)
         return data
 
     def stats(self, what, cols, nPlaces, fun):
+        ''' 
+        reports mid or div of cols (defaults to i.cols.y)
+        '''
         def fun(k, cols):
             return col.rnd((col,what)(),nplaces), col.txt
         return Lists.kap(cols or self.cols.y, fun)
 
     def better(self, row1, row2, s1, s2, ys, x, y):
+        '''
+        Returns true if `row1` dominates
+        '''
         s1,s2,ys = 0, 0, self.cols.y
         for _,col in enumerate(ys):
             x = Num.norm(row1.cells[col.at])
@@ -54,6 +64,9 @@ class Data:
         return s1 / len(ys) < s2 / len(ys)
 
     def dist(self,row1,row2,  cols, n, d):
+        '''
+        returns 0..1 distance `row1` to `row2`
+        '''
         n,d = 0,0
         for _,col in enumerate(cols or i.cols.x):
             n = n + 1
@@ -61,6 +74,9 @@ class Data:
         return (d/n) ** (1/self.the['p'])
 
     def around(self,row1,rows,cols):
+        '''
+        sort other `rows` by distance to `row`
+        '''
         rows = rows if rows else self.rows
         cols = cols if cols else self.cols.x
         def func(row2):
@@ -69,6 +85,9 @@ class Data:
         return sorted(list(map(func, rows)), key=lambda k: k['dist'])
 
     def half(self,rows,cols,above):
+        '''
+        divides data using 2 far points
+        '''
         def project():
             return {"row": row, "dist": cosine(dist(row, A), dist(row, B), c)}
         def dist():
@@ -90,6 +109,11 @@ class Data:
         return left, right, A, B, mid, c
 
     def cluster(self,rows,min,cols,above):
+        '''
+        returns `rows`, recursively halved
+        :param rows: rows to cluster
+        :param cols: cols to cluster
+        '''
         rows = (rows if rows else self.rows)
         min  = min if min else len(rows) ** options["min"]
         cols = (cols if cols else self.cols.x)
@@ -102,6 +126,9 @@ class Data:
         return node
     
     def sway(self,rows,min,cols,above):
+        '''
+        Returns best half, recursively
+        '''
         rows = (rows if rows else self.rows)
         min  = min if min else len(rows) ** options["min"]
         cols = (cols if cols else self.cols.x)
