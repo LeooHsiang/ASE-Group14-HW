@@ -1,6 +1,4 @@
-from test import test_rand, test_read_csv, test_read_data_csv
-from test import show_settings, test_nums, test_syms
-from test import test_stats
+from test import test_clone, show_settings, test_nums, test_syms, test_rand, test_read_csv, test_read_data_csv, test_around, test_cluster, test_half, test_optimize
 from string_util import settings
 from string_util import cli
 from test import *
@@ -49,6 +47,12 @@ eg("num", "check nums", test_nums)
 
 eg("csv","read from csv", test_read_csv)
 eg("data","read DATA csv", test_read_data_csv)
-eg("stats","stats from DATA", test_stats)
+
+eg("clone","duplicate structure", test_clone)
+eg("around","sorting nearest neighbors", test_around)
+eg("half","1-level bi-clustering", test_half)
+eg("cluster","N-level bi-clustering", test_cluster)
+eg("optimize","semi-supervised optimization", test_optimize)
+
 
 main(config.the, config.help, egs)

@@ -25,3 +25,21 @@ def rnd(n: float, n_places: int):
     """
     mult = math.pow(10, n_places or 3)
     return math.floor(n * mult + 0.5) / mult
+
+def show(node, what, cols, nPlaces, lvl = 0) -> None: 
+    """
+        Prints the tree generated from the Data:tree method
+        Notes on transition: 
+            rep(lvl) repeats the previous string lvl number of times 
+            #takes the length of the following value
+            .. concatanates two strings together 
+    """
+    if node:
+        print(
+            f"{'| ' * lvl}"
+            f"{len(node['data'].rows)}  "
+            f"{node['data'].stats(node['data'].cols.y, nPlaces, 'mid') if 'left' not in node or lvl == 0 else ''}"
+        )
+
+        show(node.get('left',None), what, cols, nPlaces, lvl + 1)
+        show(node.get('right',None), what, cols, nPlaces, lvl + 1)

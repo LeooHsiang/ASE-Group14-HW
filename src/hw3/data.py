@@ -3,6 +3,8 @@ from row import Row
 from lists import Lists
 from string_util import *
 import math
+from numerics import numerics
+import config as config
 
 class Data:
     '''Declares a data class that holds col and row data'''
@@ -20,7 +22,7 @@ class Data:
         if type(src) == str:
             csv(src, self.add)
         else:
-            map(src, self.add)
+            self.add(src or [])
 
     def add(self, t):
         '''
@@ -28,52 +30,50 @@ class Data:
         :param t: row to add
         '''
         if self.cols:
-            t = t if "ROW" in str(type(t)) else Row(t)
+            t = t if isinstance(t, Row) else Row(t)
             self.rows.append(t)
             self.cols.add(t)
         else:
             self.cols = Cols(t)
 
-    def clone(self, init, data):
+    def clone(self, init):
         '''
         Returns a clone
         :param init: Initial data for the clone
         '''
         data = Data(list(self.cols.names))
-        Lists.map(init or [], self.add)
+        list(map(data.add, init or []))
         return data
 
-    def stats(self, what, cols, nPlaces, fun):
+    def stats(self, cols, nPlaces, what):
         ''' 
         reports mid or div of cols (defaults to i.cols.y)
         '''
-        def fun(k, cols):
-            return col.rnd((col,what)(),nplaces), col.txt
-        return Lists.kap(cols or self.cols.y, fun)
+        return dict(sorted({col.txt: col.rnd(getattr(col, what)(), nPlaces) for col in cols or self.cols.y}.items()))
 
-    def better(self, row1, row2, s1, s2, ys, x, y):
+    def better(self, row1, row2):
         '''
         Returns true if `row1` dominates
         '''
         s1,s2,ys = 0, 0, self.cols.y
         for _,col in enumerate(ys):
-            x = Num.norm(row1.cells[col.at])
-            y = Num.norm(row2.cells[col.at])
+            x = col.norm(row1.cells[col.at])
+            y = col.norm(row2.cells[col.at])
             s1 = s1 - math.exp(col.w * (x - y) / len(ys))
             s2 = s2 - math.exp(col.w * (y - x) / len(ys))
         return s1 / len(ys) < s2 / len(ys)
 
-    def dist(self,row1,row2,  cols, n, d):
+    def dist(self,row1,row2, cols = None):
         '''
         returns 0..1 distance `row1` to `row2`
         '''
         n,d = 0,0
-        for _,col in enumerate(cols or i.cols.x):
+        for _,col in enumerate(cols or self.cols.x):
             n = n + 1
-            d = d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** self.the['p']
-        return (d/n) ** (1/self.the['p'])
+            d = d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** config.the['p']
+        return (d/n) ** (1/config.the['p'])
 
-    def around(self,row1,rows,cols):
+    def around(self,row1,rows = None,cols = None):
         '''
         sort other `rows` by distance to `row`
         '''
@@ -84,23 +84,23 @@ class Data:
             
         return sorted(list(map(func, rows)), key=lambda k: k['dist'])
 
-    def half(self,rows,cols,above):
+    def half(self,rows=None,cols=None,above=None):
         '''
         divides data using 2 far points
         '''
-        def project():
-            return {"row": row, "dist": cosine(dist(row, A), dist(row, B), c)}
-        def dist():
+        def project(row):
+            return {"row": row, "dist": numerics.cosine(dist(row, A), dist(row, B), c)}
+        def dist(row1, row2):
             return self.dist(row1, row2, cols)
         rows = (rows if rows else self.rows)
-        some = many(rows, self.the["Sample"])
-        A = above or any(some)
-        B = self.around(A,some)[int(self.the["Far"] * len(rows)) // 1]["row"]
+        some = Lists.many(rows, config.the["Sample"])
+        A = Lists.any(some,above if above else config.the['seed'])
+        B = self.around(A,some)[int(config.the["Far"] * len(rows)) // 1]["row"]
         c = dist(A,B)
 
         left, right = [], []
 
-        for n, tmp in enumerate(sort(map(rows, project), key=lambda k: k["dist"])):
+        for n, tmp in enumerate(sorted(list(map(project, rows)), key=lambda k: k["dist"])):
             if   n <= len(rows) // 2:
                 left.append(tmp["row"])
                 mid = tmp["row"]
@@ -108,60 +108,37 @@ class Data:
                 right.append(tmp["row"])
         return left, right, A, B, mid, c
 
-    def cluster(self,rows,min,cols,above):
+    def cluster(self, rows  = None, min: int = None, cols = None, above: Row = None):
         '''
         returns `rows`, recursively halved
         :param rows: rows to cluster
         :param cols: cols to cluster
         '''
         rows = (rows if rows else self.rows)
-        min  = min if min else len(rows) ** options["min"]
+        min  = min if min else len(rows) ** config.the["min"]
         cols = (cols if cols else self.cols.x)
         node = {"data": self.clone(rows)}
 
         if len(rows) > 2 * min:
-            left, right, node.A, node.B, node.mid = self.half(rows, cols, above)
-            node.left = self.cluster(left, min, cols, node.A)
-            node.right = self.cluster(right, min, cols, node.B)
+            left, right, node['A'], node['B'], node['mid'], _ = self.half(rows, cols, above)
+            node['left'] = self.cluster(left, min, cols, node['A'])
+            node['right'] = self.cluster(right, min, cols, node['B'])
         return node
     
-    def sway(self,rows,min,cols,above):
+    def sway(self,rows = None,min = 0,cols = None,above = None):
         '''
         Returns best half, recursively
         '''
         rows = (rows if rows else self.rows)
-        min  = min if min else len(rows) ** options["min"]
+        min  = min if min else len(rows) ** config.the["min"]
         cols = (cols if cols else self.cols.x)
         node = {"data": self.clone(rows)}
         if len(rows) > 2 * min:
-            left, right, node.A, node.B, node.mid = self.half(rows, cols, above)
-            if self.better(node.B, node.A):
-                left, right, node.A, node.B = right, left, node.B, node.A
-            node['left'] = self.sway(left, min, cols, node.A)
+            left, right, node['A'], node['B'], node['mid'], _ = self.half(rows, cols, above)
+            if self.better(node['B'], node['A']):
+                left, right, node['A'], node['B'] = right, left, node['B'], node['A']
+            node['left'] = self.sway(left, min, cols, node['A'])
         return node
-
-    def show(self, node, what, cols, nPlaces, lvl) -> None: 
-        """
-            Prints the tree generated from the Data:tree method
-            Notes on transition: 
-                rep(lvl) repeats the previous string lvl number of times 
-                #takes the length of the following value
-                .. concatanates two strings together 
-        """
-        if node: 
-            if lvl is None:
-                lvl = 0
-            for i in range(0, lvl): 
-                print("| ", end = "")
-            print(len(self.rows), end = "  ")
-
-            if not node.left or lvl == 0: 
-                print(self.stats(self, "mid",node.data.cols.y,nPlaces))
-            
-            # recursive call 
-            self.show(node.left, what, cols, nPlaces, lvl+1)
-            self.show(node.right, what, cols, nPlaces, lvl+1)
-
              
         
 

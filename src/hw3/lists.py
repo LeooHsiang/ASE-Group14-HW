@@ -1,4 +1,5 @@
 import random
+import config as config
 
 class Lists():
     # -- Note the following conventions for `map`.
@@ -39,10 +40,10 @@ class Lists():
     def push(self, t, x):
         self[t] = x
     
-    def any(self, t):
-        return t[random.randint(0,len(t))]
+    def any(t, seed = config.Seed):
+        random.seed(seed)
+        return random.choices(t)[0]
     
-    def many(self,t,n):
-        u = {}
-        for i in range(1, n):
-            u[1+len(u)] = self.any(t)
+    def many(t,n,seed = config.Seed):
+        random.seed(seed)
+        return random.choices(t, k=n)

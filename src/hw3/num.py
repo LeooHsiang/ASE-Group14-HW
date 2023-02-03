@@ -96,4 +96,4 @@ class Num():
             else: 
                 n2 = 0 
             
-            return math.abs(n1 - n2)
+            return abs(n1 - n2)

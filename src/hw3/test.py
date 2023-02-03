@@ -53,10 +53,37 @@ def test_read_data_csv():
     data.cols.x[1].at==1 and \
     len(data.cols.x)==4
 
-def test_stats(): 
+def test_clone():
+    data1 = Data(config.the["file"])
+    data2 = data1.clone(data1.rows)
+
+    return (
+        len(data1.rows) == len(data2.rows)
+        and data1.cols.y[1].w == data2.cols.y[1].w
+        and data1.cols.x[1].at == data2.cols.x[1].at
+        and len(data1.cols.x) == len(data2.cols.x)
+    )
+
+def test_around():
+    data=Data(config.the['file'])
+    print(0,0,data.rows[0].cells)
+    for n,t in enumerate(data.around(data.rows[0])):
+        if (n+1) %50 ==0:
+            print(n, rnd(t['dist'],2) ,t['row'].cells)
+            
+def test_half():
+    data=Data(config.the['file'])
+    left,right,A,B,mid,c = data.half() 
+    print(len(left),len(right),len(data.rows))
+    print(A.cells,c)
+    print(mid.cells)
+    print(B.cells)
+
+def test_cluster():
     data = Data(config.the['file'])
-    d = {'y': data.cols.y, 'x': data.cols.x}
-    for k, cols in d.items():
-        print(k + ' mid '+ str(data.stats('mid', cols, 2)))
-        print(''+ ' div ' +str(data.stats('div', cols, 2)))
-    return True
+    show(data.cluster(), "mid", data.cols.y, 1)
+    
+
+def test_optimize():
+    data = Data(config.the['file'])
+    show(data.sway(), "mid", data.cols.y, 1)
