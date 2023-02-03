@@ -40,4 +40,7 @@ jobs:
     - name: HW2 Testing
       run: |
         python3 src/hw2/main.py -g all
+    - name: HW3 Testing
+      run: |
+        python3 src/hw3/main.py -g all
      
