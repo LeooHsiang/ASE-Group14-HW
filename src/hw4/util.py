@@ -1,6 +1,12 @@
 import io
 import math
 import re
+from num import NUM
+from sym import SYM
+from data import DATA
+from math import floor
+from copy import deepcopy
+import string_util
 
 def transpose(t):
     u = []
