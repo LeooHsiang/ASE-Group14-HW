@@ -1,6 +1,6 @@
 import random
 import config as config
-import copy
+import copy as cp
 
 class Lists():
     # -- Note the following conventions for `map`.
@@ -52,8 +52,5 @@ class Lists():
     def last(self, t):
         return t[len(t)]
     
-    def copy(self, t):
-        if not isinstance(element, dict):
-            return t
-        u = copy.deepcopy(t)
-        return u
+    def copy(t):
+        return cp.deepcopy(t)

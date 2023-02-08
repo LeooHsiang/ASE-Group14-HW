@@ -21,13 +21,20 @@ class Cols:
         self.x = []
         self.y = []
         self.klass = None
-        for n, s in enumerate(t):
-            col = Num(n, s) if re.findall("^[A-Z]+", s) else Sym(n, s)
+        for col_name in t:
+            if isinstance(col_name, int):
+                col = Num(t.index(col_name), col_name)
+            else:
+                col = Sym(t.index(col_name), col_name)
             self.all.append(col)
-            if not re.findall("X$", s):
-                if re.findall("!$", s):
-                    self.klass = col
-                self.y.append(col) if re.findall("[!+-]$", s) else self.x.append(col)
+
+            if not col_name[-1] == "X":
+                if "+" in col_name or "!" in col_name:
+                    self.y.append(col)
+                else:
+                    self.x.append(col)
+                if "!" in col_name:
+                    self.klass=col
                 
     def add(self, row):
         for _,t in enumerate([self.x, self.y]):

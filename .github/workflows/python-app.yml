@@ -43,4 +43,6 @@ jobs:
     - name: HW3 Testing
       run: |
         python3 src/hw3/main.py -g all
-     
+    - name: HW4 Testing
+      run: |
+        python3 src/hw4/main.py -g all

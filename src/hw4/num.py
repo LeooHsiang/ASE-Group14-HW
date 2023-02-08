@@ -1,6 +1,4 @@
-import math
-from util import rnd
-
+from numerics import numerics
 class Num():
     """
     Summarizes a stream of numbers. 
@@ -70,7 +68,7 @@ class Num():
         if x == "?": 
             return x
         else: 
-            return rnd(x, n)
+            return numerics.rnd(x, n)
 
     def norm(self, n): 
         """

@@ -1,4 +1,4 @@
-from test import test_clone, show_settings, test_nums, test_syms, test_rand, test_read_csv, test_read_data_csv, test_around, test_cluster, test_half, test_optimize
+from test import show_settings, test_copy, test_every, test_nums, test_position, test_prototypes, test_repCols, test_repRows, test_syms, test_synonyms
 from string_util import settings
 from string_util import cli
 from test import *
@@ -38,21 +38,14 @@ def eg(key,string,fun):
   config.help = config.help + ("  -g  %s\t%s\n" % (key,string))
   
 eg("the", "show settings", show_settings)
-
-eg("rand", "generate, reset, regenerate same", test_rand)
-
+eg("copy", "check copy", test_copy)
 eg("sym", "check syms", test_syms)
-
 eg("num", "check nums", test_nums)
-
-eg("csv","read from csv", test_read_csv)
-eg("data","read DATA csv", test_read_data_csv)
-
-eg("clone","duplicate structure", test_clone)
-eg("around","sorting nearest neighbors", test_around)
-eg("half","1-level bi-clustering", test_half)
-eg("cluster","N-level bi-clustering", test_cluster)
-eg("optimize","semi-supervised optimization", test_optimize)
-
+eg("repcols", "check repcols", test_repRows)
+eg("synonyms", "check repcols cluster", test_synonyms)
+eg("reprows","checking reprows", test_repCols)
+eg('prototypes','checking reprows cluster', test_prototypes)
+eg('position','where\'s wally', test_position)
+eg('every','the whole enchilada', test_every)
 
 main(config.the, config.help, egs)

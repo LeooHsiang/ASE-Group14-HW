@@ -1,12 +1,10 @@
 import io
-import math
+import json
 import re
-from num import NUM
-from sym import SYM
-from data import DATA
-from math import floor
+from data import Data
 from copy import deepcopy
-from string_util import string_util
+from numerics import numerics
+from string_util import *
 
 def transpose(t):
     u = []
@@ -16,29 +14,35 @@ def transpose(t):
             u[i].append(t[j][i])
     return u 
 
-def repCols(cols):
+def repCols(cols, Data):
     cols = deepcopy(cols)
     for _,col in enumerate(cols):
-        col[len(col)] = str(col[0]) + ":" + str(len(col))
+        col[len(col) - 1] = col[0] + ":" + col[len(col) - 1]
         for j in range(1, len(col)):
             col[j - 1] = col[j]
         col.pop()
     cols.insert(0, ['Num' + str(k) for k in range(len(cols[0]))])
     cols[0][-1] = "thingX"
-    return DATA(cols)
+    return Data(cols)
 
-def repRows(t, rows, u):
+def repRows(t, Data, rows):
     rows = deepcopy(rows)
     for j,s in enumerate(rows[-1]):
-        rows[0][j] = str(rows[0][j]) + ":" + str(s)
+        rows[0][j] = str(rows[0][j]) + ":" + s
     rows.pop()
     for n, row in enumerate(rows):
         if n==0:
             row.append("thingX")
         else:
-            u = t["rows"][len(t["rows"]) - n + 2]
-            row.append(u[-1])
-    return DATA(rows)
+            u = t['rows'][- n]
+            row.append(u[len(u) - 1])
+    return Data(rows)
+
+def dofile(sFile):
+    file = open(sFile, 'r', encoding='utf-8')
+    text  = re.findall(r'(?<=return )[^.]*', file.read())[0].replace('{', '[').replace('}',']').replace('=',':').replace('[\n','{\n' ).replace(' ]',' }' ).replace('\'', '"').replace('_', '"_"')
+    file.close()
+    return json.loads(re.sub("(\w+):", r'"\1":', text))
 
 def repPlace(data):
     n,g = 20,[]
@@ -56,14 +60,14 @@ def repPlace(data):
         g[y][x] = c
     print("")
     for y in range(maxy):
-        string_util.oo(g[y])
+        oo(g[y])
 
-def repgrid(sFile):
+def repgrid(sFile, Data):
     t = dofile(sFile)
-    rows = repRows(t, transpose(t["cols"]))
-    cols = repCols(t["cols"])
-    show(rows.cluster())
-    show(cols.cluster())
+    rows = repRows(t, Data, transpose(t["cols"]))
+    cols = repCols(t["cols"], Data)
+    show(rows.cluster(),"mid",rows.cols.all,1)
+    show(cols.cluster(),"mid",cols.cols.all,1)
     repPlace(rows)
 
 def last(t):
@@ -78,12 +82,11 @@ def show(node, what, cols, nPlaces, lvl = 0) -> None:
             .. concatanates two strings together 
     """
     if node:
-        lvl = lvl or 0
-        print("|.. " * lvl, end="")
-        if ("left" not in node):
-            print(last(last(node.data.rows).cells))
-        else:
-            print(str(int(100 * node["C"])))
+        print(
+            f"{'| ' * lvl}"
+            f"{len(node['data'].rows)}  "
+            f"{node['data'].stats(node['data'].cols.y, nPlaces, 'mid') if 'left' not in node or lvl == 0 else ''}"
+        )
 
         show(node.get('left',None), what, cols, nPlaces, lvl + 1)
         show(node.get('right',None), what, cols, nPlaces, lvl + 1)

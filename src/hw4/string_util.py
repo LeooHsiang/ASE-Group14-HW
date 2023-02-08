@@ -26,13 +26,14 @@ def coerce(s):
     if type(s) == bool:
         return s
     try:
-        res = int(s)
-    except:
+        if type(s) == float:
+            return s
+        return int(s)
+    except ValueError:
         try:
-            res = float(s)
-        except:
-            res = fun(re.match("^\s*(.+)\s*$", s).string)
-    return res
+            return float(s)
+        except ValueError:
+            return fun(s)
 
 """
 Reads in default options and stores in configuration dictionary "the"
@@ -61,12 +62,15 @@ def fmt(self, sControl, *argv):
     return sControl.format(*argv)
 
 # print `t` then return it
-def oo(self, t):
-    print(self.o(t))
-    return t
+def oo(t):
+    d = t.__dict__
+    d['a'] = t.__class__.__name__
+    d['id'] = id(t)
+    d = dict(sorted(d.items()))
+    print(d)
 
 # convert `t` to a string. sort named keys. 
-def o(self, t, isKeys):
+def o(self, t):
     if (type(t) is dict):
         return t
     else:
