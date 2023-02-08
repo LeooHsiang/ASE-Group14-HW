@@ -4,6 +4,8 @@ from lists import Lists
 from string_util import *
 from numerics import numerics
 import config as config
+import util as util
+from operator import itemgetter
 
 class Data:
     '''Declares a data class that holds col and row data'''
@@ -36,13 +38,9 @@ class Data:
         else:
             self.cols=Cols(t)
 
-    def clone(self, init = {}):
-        '''
-        Returns a clone
-        :param init: Initial data for the clone
-        '''
-        data = Data(self.cols.names)
-        list(map(data.add, init))
+    def clone(self, init = []):
+        data = Data([self.cols.names])
+        map(lambda x: data.add(x), init)
         return data
 
     def stats(self, cols, nPlaces, what):
@@ -73,40 +71,41 @@ class Data:
             d = d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** config.the['p']
         return (d/n) ** (1/config.the['p'])
 
-    def around(self,row1,rows = None,cols = None):
-        '''
-        sort other `rows` by distance to `row`
-        '''
-        rows = rows if rows else self.rows
-        cols = cols if cols else self.cols.x
-        def func(row2):
-            return {'row': row2, 'dist': self.dist(row1, row2, cols)}
-            
-        return sorted(list(map(func, rows)), key=lambda k: k['dist'])
+    def around(self, row1, rows = None, cols = None):
+        def function(row2):
+            return {'row' : row2, 'dist' : self.dist(row1,row2,cols)} 
+        return sorted(list(map(function, rows or self.rows)), key=itemgetter('dist'))
 
-    def furthest(self, row1, rows, cols, t): 
+    def furthest(self, row1, rows = None, cols = None): 
         t = self.around(row1, rows, cols)
-        return t
+        return t[len(t)-1]
 
     def half(self,rows=None,cols=None,above=None):
         '''
         divides data using 2 far points
         '''
         def project(row):
-            return {"row": row, "dist": numerics.cosine(dist(row, A), dist(row, B), c)}
+            x, y = numerics.cosine(dist(row,A), dist(row,B), c)
+            try:
+                row.x = row.x
+                row.y = row.y
+            except:
+                row.x = x
+                row.y = y
+            return {'row' : row, 'x' : x, 'y' : y}
         def dist(row1, row2):
             return self.dist(row1, row2, cols)
         rows = rows or self.rows
-        A    = above or any(rows)
-        B    = self.furthest(A,rows)['row']
+        A    = above or util.any(rows)
+        B    = self.furthest(A, rows)['row']
         c = dist(A,B)
         left, right = [], []
-        for n, tmp in enumerate(sorted(list(map(project, rows)), key=lambda k: k["dist"])):
-            if   n <= len(rows) // 2:
-                left.append(tmp["row"])
-                mid = tmp["row"]
+        for n,tmp in enumerate(sorted(list(map(project, rows)), key=itemgetter('x'))):
+            if n < len(rows)//2:
+                left.append(tmp['row'])
+                mid = tmp['row']
             else:
-                right.append(tmp["row"])
+                right.append(tmp['row'])
         return left, right, A, B, mid, c
 
     def cluster(self, rows  = None, cols = None, above = None):
@@ -115,14 +114,13 @@ class Data:
         :param rows: rows to cluster
         :param cols: cols to cluster
         '''
-        rows = (rows if rows else self.rows)
-        cols = (cols if cols else self.cols.x)
-        node = {'data': self.clone(rows)}
-
+        rows = rows if rows != None else self.rows
+        cols = cols if cols != None else self.cols.x
+        node = {"data" : self.clone(rows)}
         if len(rows) >= 2:
-            left, right, node['A'], node['B'], node['mid'], _ = self.half(rows, cols, above)
-            node['left'] = self.cluster(left, cols, node['A'])
-            node['right'] = self.cluster(right, cols, node['B'])
+            left, right, node["A"], node["B"], node["mid"], node["c"] = self.half(rows,cols,above)
+            node["left"]  = self.cluster(left, cols, node["A"])
+            node["right"] = self.cluster(right, cols, node["B"])
         return node
     
     # def sway(self,rows = None,min = 0,cols = None,above = None):

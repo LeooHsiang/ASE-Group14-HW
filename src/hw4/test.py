@@ -29,30 +29,33 @@ def test_nums():
     return 11/7 == num.mid() and 0.787 == numerics.rnd(num.div())
 
 def test_repCols():
-    t = repCols(dofile(config.the['file'])['cols'], Data)
+    t = repCols(dofile(config.the['file'])['cols'])
     _ = list(map(oo, t.cols.all))
     _ = list(map(oo, t.rows))
 
 def test_synonyms():
     data = Data(config.the['file'])
-    show(repCols(dofile(config.the['file'])['cols'], Data).cluster(),"mid",data.cols.all,1)
-
+    cols = dofile(config.the['file'])['cols']
+    t = repCols(cols)
+    node = t.cluster()
+    show(node,"mid",data.cols.all,1)
+    
 def test_repRows():
     t=dofile(config.the['file'])
-    rows = repRows(t, Data, transpose(t['cols']))
+    rows = repRows(t, transpose(t['cols']))
     _ = list(map(oo, rows.cols.all))
     _ = list(map(oo, rows.rows))
 
 def test_prototypes():
     t = dofile(config.the['file'])
-    rows = repRows(t, Data, transpose(t['cols']))
+    rows = repRows(t, transpose(t['cols']))
     show(rows.cluster(),"mid",rows.cols.all,1)
 
 def test_position():
     t = dofile(config.the['file'])
-    rows = repRows(t, Data, transpose(t['cols']))
+    rows = repRows(t, transpose(t['cols']))
     rows.cluster()
     repPlace(rows)
 
 def test_every():
-    repgrid(config.the['file'], Data)
+    repgrid(config.the['file'])

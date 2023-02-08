@@ -37,8 +37,11 @@ class Cols:
                 if "!" in col_name:
                     self.klass=col
 
-    def add(self, row):
-        for t in [self.x, self.y]:
-            for col in t:
-                col.add(row.cells[col.at])
+    def add(self,row):
+        '''
+        Update the (not skipped) columns with details from 'row'
+        '''
+        columns=self.x.copy()+self.y.copy()
+        for col in columns:
+            col.add(row.cells[col.at])
 

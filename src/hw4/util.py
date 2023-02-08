@@ -1,5 +1,7 @@
 import io
 import json
+import math
+import random
 import re
 from data import Data
 from copy import deepcopy
@@ -14,7 +16,7 @@ def transpose(t):
             u[i].append(t[j][i])
     return u 
 
-def repCols(cols, Data):
+def repCols(cols):
     cols = deepcopy(cols)
     print(cols)
     for _,col in enumerate(cols):
@@ -27,7 +29,7 @@ def repCols(cols, Data):
     cols.insert(0, first_col)
     return Data(cols)
 
-def repRows(t, Data, rows):
+def repRows(t, rows):
     rows = deepcopy(rows)
     for j,s in enumerate(rows[-1]):
         rows[0][j] = str(rows[0][j]) + ":" + s
@@ -41,10 +43,15 @@ def repRows(t, Data, rows):
     return Data(rows)
 
 def dofile(sFile):
-    file = open(sFile, 'r', encoding='utf-8')
-    text  = re.findall(r'(?<=return )[^.]*', file.read())[0].replace('{', '[').replace('}',']').replace('=',':').replace('[\n','{\n' ).replace(' ]',' }' ).replace('\'', '"').replace('_', '"_"')
-    file.close()
-    return json.loads(re.sub("(\w+):", r'"\1":', text))
+    with open(sFile, 'r', encoding = 'utf-8') as f:
+        content  = f.read()
+        content = re.findall(r'(return\s+[^.]+)', content)[0]
+        map = {'return ' : '', '{' : '[', '}' : ']','=':':', '[\n':'{\n', '\n]':'\n}', '_':'"_"', '\'':'"'}
+        for k,v in map.items():
+            content = content.replace(k, v)
+        content = re.sub("(\w+):",r'"\1":',content)
+        parsed_json = json.loads(content)
+        return parsed_json
 
 def repPlace(data):
     n,g = 20,[]
@@ -64,10 +71,10 @@ def repPlace(data):
     for y in range(maxy):
         oo(g[y])
 
-def repgrid(sFile, Data):
+def repgrid(sFile):
     t = dofile(sFile)
-    rows = repRows(t, Data, transpose(t["cols"]))
-    cols = repCols(t["cols"], Data)
+    rows = repRows(t, transpose(t["cols"]))
+    cols = repCols(t["cols"])
     show(rows.cluster(),"mid",rows.cols.all,1)
     show(cols.cluster(),"mid",cols.cols.all,1)
     repPlace(rows)
@@ -75,6 +82,10 @@ def repgrid(sFile, Data):
 def last(t):
     return t[-1]
 
+def rint(lo,hi):
+    return 4 or math.floor(0.5 + random(lo,hi))
+def any(t):
+    return t[rint(0, len(t))-1]
 def show(node, what, cols, nPlaces, lvl = 0) -> None: 
     """
         Prints the tree generated from the Data:tree method
