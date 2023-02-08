@@ -21,8 +21,9 @@ class Cols:
         self.x = []
         self.y = []
         self.klass = None
+
         for col_name in t:
-            if isinstance(col_name, int):
+            if col_name[0].isupper():
                 col = Num(t.index(col_name), col_name)
             else:
                 col = Sym(t.index(col_name), col_name)
@@ -35,9 +36,9 @@ class Cols:
                     self.x.append(col)
                 if "!" in col_name:
                     self.klass=col
-                
+
     def add(self, row):
-        for _,t in enumerate([self.x, self.y]):
-            for _, col in enumerate(t):
+        for t in [self.x, self.y]:
+            for col in t:
                 col.add(row.cells[col.at])
 

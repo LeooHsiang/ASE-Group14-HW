@@ -8,7 +8,7 @@ from string_util import *
 
 def transpose(t):
     u = []
-    for i in range(0, len(t[0])):
+    for i in range(0, len(t[1])):
         u.append([])
         for j in range(0, len(t)):
             u[i].append(t[j][i])
@@ -16,13 +16,15 @@ def transpose(t):
 
 def repCols(cols, Data):
     cols = deepcopy(cols)
+    print(cols)
     for _,col in enumerate(cols):
         col[len(col) - 1] = col[0] + ":" + col[len(col) - 1]
         for j in range(1, len(col)):
             col[j - 1] = col[j]
         col.pop()
-    cols.insert(0, ['Num' + str(k) for k in range(len(cols[0]))])
-    cols[0][-1] = "thingX"
+    first_col = ['Num' + str(k+1) for k in range(len(cols[1])-1)]
+    first_col.append('thingX')
+    cols.insert(0, first_col)
     return Data(cols)
 
 def repRows(t, Data, rows):

@@ -18,10 +18,11 @@ class Data:
     def __init__(self, src):
         self.rows = list()
         self.cols = None
-        if type(src) == str:
+        if isinstance(src, str):
             csv(src, self.add)
         else:
-            self.add(src or [])
+            for row in src:
+                self.add(row)
 
     def add(self, t):
         '''
@@ -29,19 +30,19 @@ class Data:
         :param t: row to add
         '''
         if self.cols:
-            t = t if isinstance(t, Row) else Row(t)
+            t = Row(t) if type(t) == list else t
             self.rows.append(t)
             self.cols.add(t)
         else:
-            self.cols = Cols(t)
+            self.cols=Cols(t)
 
-    def clone(self, init):
+    def clone(self, init = {}):
         '''
         Returns a clone
         :param init: Initial data for the clone
         '''
-        data = Data(list(self.cols.names))
-        list(map(data.add, init or []))
+        data = Data(self.cols.names)
+        list(map(data.add, init))
         return data
 
     def stats(self, cols, nPlaces, what):
@@ -95,14 +96,11 @@ class Data:
             return {"row": row, "dist": numerics.cosine(dist(row, A), dist(row, B), c)}
         def dist(row1, row2):
             return self.dist(row1, row2, cols)
-        rows = (rows if rows else self.rows)
-        some = Lists.many(rows, config.the["Sample"])
-        A = Lists.any(some,above if above else config.the['seed'])
-        B = self.around(A,some)[int(config.the["Far"] * len(rows)) // 1]["row"]
+        rows = rows or self.rows
+        A    = above or any(rows)
+        B    = self.furthest(A,rows)['row']
         c = dist(A,B)
-
         left, right = [], []
-
         for n, tmp in enumerate(sorted(list(map(project, rows)), key=lambda k: k["dist"])):
             if   n <= len(rows) // 2:
                 left.append(tmp["row"])
@@ -111,7 +109,7 @@ class Data:
                 right.append(tmp["row"])
         return left, right, A, B, mid, c
 
-    def cluster(self, rows  = None, min: int = None, cols = None, above: Row = None):
+    def cluster(self, rows  = None, cols = None, above = None):
         '''
         returns `rows`, recursively halved
         :param rows: rows to cluster
@@ -119,12 +117,12 @@ class Data:
         '''
         rows = (rows if rows else self.rows)
         cols = (cols if cols else self.cols.x)
-        node = {"data": self.clone(rows)}
+        node = {'data': self.clone(rows)}
 
         if len(rows) >= 2:
             left, right, node['A'], node['B'], node['mid'], _ = self.half(rows, cols, above)
-            node['left'] = self.cluster(left, min, cols, node['A'])
-            node['right'] = self.cluster(right, min, cols, node['B'])
+            node['left'] = self.cluster(left, cols, node['A'])
+            node['right'] = self.cluster(right, cols, node['B'])
         return node
     
     # def sway(self,rows = None,min = 0,cols = None,above = None):
