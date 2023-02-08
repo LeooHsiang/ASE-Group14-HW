@@ -6,7 +6,7 @@ from sym import SYM
 from data import DATA
 from math import floor
 from copy import deepcopy
-import string_util
+from string_util import string_util
 
 def transpose(t):
     u = []
@@ -56,7 +56,7 @@ def repPlace(data):
         g[y][x] = c
     print("")
     for y in range(maxy):
-        oo(g[y])
+        string_util.oo(g[y])
 
 def repgrid(sFile):
     t = dofile(sFile)
@@ -66,6 +66,8 @@ def repgrid(sFile):
     show(cols.cluster())
     repPlace(rows)
 
+def last(t):
+    return t[-1]
 
 def show(node, what, cols, nPlaces, lvl = 0) -> None: 
     """
