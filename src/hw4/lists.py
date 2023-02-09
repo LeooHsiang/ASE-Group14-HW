@@ -49,8 +49,8 @@ class Lists():
         random.seed(seed)
         return random.choices(t, k=n)
     
-    def last(self, t):
-        return t[len(t)]
+    def last(t):
+        return t[len(t) - 1]
     
     def copy(t):
         return cp.deepcopy(t)

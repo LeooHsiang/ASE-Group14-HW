@@ -40,7 +40,7 @@ class Data:
 
     def clone(self, init = []):
         data = Data([self.cols.names])
-        map(lambda x: data.add(x), init)
+        _ = list(map(data.add, init))
         return data
 
     def stats(self, cols, nPlaces, what):
@@ -114,9 +114,9 @@ class Data:
         :param rows: rows to cluster
         :param cols: cols to cluster
         '''
-        rows = rows if rows != None else self.rows
-        cols = cols if cols != None else self.cols.x
-        node = {"data" : self.clone(rows)}
+        rows = rows or self.rows
+        cols = cols or self.cols.x
+        node = { 'data' : self.clone(rows) }
         if len(rows) >= 2:
             left, right, node["A"], node["B"], node["mid"], node["c"] = self.half(rows,cols,above)
             node["left"]  = self.cluster(left, cols, node["A"])

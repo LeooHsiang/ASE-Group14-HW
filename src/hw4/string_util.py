@@ -2,7 +2,7 @@ import re
 import sys
 import lists
 import io
-
+from lists import Lists
 
     
 arg = sys.argv[1:]
@@ -70,15 +70,27 @@ def oo(t):
     print(d)
 
 # convert `t` to a string. sort named keys. 
-def o(self, t):
-    if (type(t) is dict):
-        return t
-    else:
-        def func(k, v):
-            if not str(t):
-                return ": {} {}".format(self.o(k), self.o(v)) 
-        u = lists.kap(t, func)
-        return sorted(u)
+def o(t):
+    if type(t)!=dict and type(t)!=list:
+        return str(t)
+    
+    def fun(k,v):
+        if(str(k).find('_')!=0):
+            v = o(v)
+            return ":" + str(k) + " " + o(v)
+        
+        else:
+            return False
+    array = []
+    if type(t) == dict:
+        for key in t:
+            output = fun(key, t[key])
+            if output:
+                array.append(output)
+            array.sort()
+    elif type(t) == list:
+        array = t
+    return "{" + " ".join(str(val) for val in array) + "}"
 
 
 def csv(sFilename,fun):

@@ -21,13 +21,8 @@ class numerics():
     # return `n` rounded to `nPlaces`
 
     def rnd(n, nPlaces=3):
-        mult = 0
-        if nPlaces:
-            mult = 10 ** nPlaces
-        else:
-            mult = 10 ** 3
-
-        return math.floor(n * mult + 0.5) / mult
+        mult=10**(nPlaces or 3)
+        return math.floor(n*mult + 0.5)/mult
 
     def cosine(a,b,c):
         x1 = (a**2 + c**2 - b**2) / (2**c)

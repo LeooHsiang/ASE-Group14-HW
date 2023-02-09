@@ -7,6 +7,7 @@ from data import Data
 from copy import deepcopy
 from numerics import numerics
 from string_util import *
+from lists import Lists
 
 def transpose(t):
     u = []
@@ -54,22 +55,22 @@ def dofile(sFile):
         return parsed_json
 
 def repPlace(data):
-    n,g = 20,[]
-    for i in range(n+1):
-        g.append([])
-        for j in range(n+1):
-            g[i].append(" ")
+    n,g = 20,{}
+    for i in range(1, n+1):
+        g[i]={}
+        for j in range(1, n+1):
+            g[i][j]=' '
     maxy = 0
-    print("")
-    for r, row in enumerate(data.rows):
-        c = chr(r+65)
-        print(c, last(row.cells))
-        x, y = int(row.x*n), int(row.y*n)
-        maxy = max(maxy, y)
-        g[y][x] = c
-    print("")
-    for y in range(maxy):
-        oo(g[y])
+    print('')
+    for r,row in enumerate(data.rows):
+        c = chr(97+r).upper()
+        print(c, row.cells[-1])
+        x,y= row.x*n//1, row.y*n//1
+        maxy = int(max(maxy,y+1))
+        g[y+1][x+1] = c
+    print('')
+    for y in range(1,maxy+1):
+        print(' '.join(g[y].values()))
 
 def repgrid(sFile):
     t = dofile(sFile)
@@ -86,6 +87,17 @@ def rint(lo,hi):
     return 4 or math.floor(0.5 + random(lo,hi))
 def any(t):
     return t[rint(0, len(t))-1]
+
+def rnd(n: float, n_places = None):
+    """
+    Rounds number n to n places.
+    :param n: Number
+    :param n_places: Number of decimal places to round
+    :return: Rounded number
+    """
+    mult = math.pow(10, n_places or 3)
+    return math.floor(n * mult + 0.5) / mult
+
 def show(node, what, cols, nPlaces, lvl = 0) -> None: 
     """
         Prints the tree generated from the Data:tree method
@@ -95,12 +107,11 @@ def show(node, what, cols, nPlaces, lvl = 0) -> None:
             .. concatanates two strings together 
     """
     if node:
-        print(
-            f"{'| ' * lvl}"
-            f"{len(node['data'].rows)}  "
-            f"{node['data'].stats(node['data'].cols.y, nPlaces, 'mid') if 'left' not in node or lvl == 0 else ''}"
-        )
-
-        show(node.get('left',None), what, cols, nPlaces, lvl + 1)
-        show(node.get('right',None), what, cols, nPlaces, lvl + 1)
-
+        string=lvl*"|" 
+        if node.get("left")==None:
+            print(string,o(Lists.last(Lists.last(node["data"].rows).cells)))
+        else:
+            string1="%.f"%(numerics.rnd(100*node.get("c")))
+            print(string,string1)
+        show(node.get("left"),what,cols,nPlaces,lvl+1)
+        show(node.get("right"),what,cols,nPlaces,lvl+1)
