@@ -107,7 +107,7 @@ def show(node, what, cols, nPlaces, lvl = 0) -> None:
             .. concatanates two strings together 
     """
     if node:
-        string=lvl*"|" 
+        string=lvl*"|.." 
         if node.get("left")==None:
             print(string,o(Lists.last(Lists.last(node["data"].rows).cells)))
         else:
