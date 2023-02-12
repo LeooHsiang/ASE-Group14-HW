@@ -63,11 +63,10 @@ def fmt(self, sControl, *argv):
 
 # print `t` then return it
 def oo(t):
-    d = t.__dict__
-    d['a'] = t.__class__.__name__
-    d['id'] = id(t)
-    d = dict(sorted(d.items()))
-    print(d)
+    td = t.__dict__
+    td['a'] = t.__class__.__name__
+    td['id'] = id(t)
+    print(dict(sorted(td.items())))
 
 # convert `t` to a string. sort named keys. 
 def o(t):

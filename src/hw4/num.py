@@ -1,29 +1,21 @@
+import math
 from numerics import numerics
 class Num():
     """
     Summarizes a stream of numbers. 
     """
     def __init__(self, at: int = 0, txt: str = "") -> None:
-        super().__init__()
-        # representing column position
-        if at: 
-            self.at = at
-        else: 
-            self.at = 0 
-        # representing column name
-        if txt: 
-            self.txt = txt
-        else: 
-            self.txt = ""
+        self.at = at
+        self.txt = txt
+
         self.n = 0
         self.mu = 0
         self.m2 = 0
-        self.lo = float('inf')
-        self.hi = float('-inf')
-        if self.txt.find("-$"): 
-            self.w = -1
-        else: 
-            self.w = 1
+
+        self.lo = math.inf
+        self.hi = -math.inf
+
+        self.w = -1 if self.txt.endswith("-") else 1
 
     def add(self, n: float) -> None:
         """

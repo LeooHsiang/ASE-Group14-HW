@@ -19,7 +19,6 @@ def transpose(t):
 
 def repCols(cols):
     cols = deepcopy(cols)
-    print(cols)
     for _,col in enumerate(cols):
         col[len(col) - 1] = col[0] + ":" + col[len(col) - 1]
         for j in range(1, len(col)):
