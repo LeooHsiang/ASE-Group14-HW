@@ -1,0 +1,132 @@
+{'dump': False, 'file': 'etc/data/hw4_repgrid_user2.csv', 'go': 'all', 'help': False, 'p': 2, 'seed': 937162211}
+✅ pass: the
+b4 {'a': 1, 'b': {'c': 2, 'd': [3]}} 
+after {'a': 1, 'b': {'c': 2, 'd': [10000]}}
+✅ pass: copy
+✅ pass: sym
+✅ pass: num
+{'a': 'Num', 'at': 0, 'hi': 5, 'id': 140651589265872, 'lo': 2, 'm2': 7.499999999999999, 'mu': 4.5, 'n': 6, 'txt': 'Num1', 'w': 1}
+{'a': 'Num', 'at': 1, 'hi': 5, 'id': 140651589265920, 'lo': 3, 'm2': 3.333333333333333, 'mu': 3.666666666666667, 'n': 6, 'txt': 'Num2', 'w': 1}
+{'a': 'Num', 'at': 2, 'hi': 4, 'id': 140651589266064, 'lo': 2, 'm2': 2.0, 'mu': 3.0, 'n': 6, 'txt': 'Num3', 'w': 1}
+{'a': 'Num', 'at': 3, 'hi': 5, 'id': 140651589266016, 'lo': 3, 'm2': 2.0, 'mu': 4.0, 'n': 6, 'txt': 'Num4', 'w': 1}
+{'a': 'Num', 'at': 4, 'hi': 5, 'id': 140651589266160, 'lo': 3, 'm2': 2.833333333333333, 'mu': 4.166666666666667, 'n': 6, 'txt': 'Num5', 'w': 1}
+{'a': 'Num', 'at': 5, 'hi': 5, 'id': 140651589265776, 'lo': 3, 'm2': 2.833333333333333, 'mu': 3.833333333333333, 'n': 6, 'txt': 'Num6', 'w': 1}
+{'a': 'Num', 'at': 6, 'hi': 5, 'id': 140652126956032, 'lo': 3, 'm2': 3.4999999999999996, 'mu': 4.5, 'n': 6, 'txt': 'Num7', 'w': 1}
+{'a': 'Num', 'at': 7, 'hi': 5, 'id': 140652126957040, 'lo': 4, 'm2': 1.3333333333333344, 'mu': 4.666666666666666, 'n': 6, 'txt': 'Num8', 'w': 1}
+{'a': 'Num', 'at': 8, 'hi': 4, 'id': 140652126956128, 'lo': 3, 'm2': 1.5, 'mu': 3.5, 'n': 6, 'txt': 'Num9', 'w': 1}
+{'a': 'Num', 'at': 9, 'hi': 5, 'id': 140652126956080, 'lo': 4, 'm2': 0.8333333333333335, 'mu': 4.833333333333333, 'n': 6, 'txt': 'Num10', 'w': 1}
+{'a': 'Sym', 'at': 10, 'has': {}, 'id': 140652126955984, 'mode': None, 'most': 0, 'n': 0, 'txt': 'thingX'}
+{'a': 'Row', 'cells': [5, 3, 3, 4, 5, 4, 4, 5, 4, 5, 'HighStatusCar:Non-HighStatusCar'], 'id': 140651589266112}
+{'a': 'Row', 'cells': [5, 4, 3, 4, 4, 4, 3, 5, 3, 5, 'Expensive:Reasonable'], 'id': 140652126957088}
+{'a': 'Row', 'cells': [5, 3, 2, 3, 4, 5, 5, 4, 3, 5, 'GoodQuality:PoorQuality'], 'id': 140652126957184}
+{'a': 'Row', 'cells': [2, 3, 3, 5, 4, 3, 5, 4, 4, 4, 'EcoFriendly:Not-EcoFriendly'], 'id': 140651858399872}
+{'a': 'Row', 'cells': [5, 5, 4, 4, 3, 3, 5, 5, 3, 5, 'TechnicallyAdvanced:PoorEngineering'], 'id': 140651858399824}
+{'a': 'Row', 'cells': [5, 4, 3, 4, 5, 4, 5, 5, 4, 5, 'GoodDesign:BoringDesign'], 'id': 140651858399920}
+✅ pass: repcols
+{'a': 'Num', 'at': 0, 'hi': 5, 'id': 140651589266112, 'lo': 3, 'm2': 5.600000000000001, 'mu': 4.199999999999999, 'n': 10, 'txt': 'HighStatusCar:Non-HighStatusCar', 'w': 1}
+{'a': 'Num', 'at': 1, 'hi': 5, 'id': 140652126956032, 'lo': 3, 'm2': 6.0, 'mu': 4.0, 'n': 10, 'txt': 'Expensive:Reasonable', 'w': 1}
+{'a': 'Num', 'at': 2, 'hi': 5, 'id': 140652126957040, 'lo': 2, 'm2': 10.9, 'mu': 3.9, 'n': 10, 'txt': 'GoodQuality:PoorQuality', 'w': 1}
+{'a': 'Num', 'at': 3, 'hi': 5, 'id': 140652126956128, 'lo': 2, 'm2': 8.100000000000001, 'mu': 3.6999999999999997, 'n': 10, 'txt': 'EcoFriendly:Not-EcoFriendly', 'w': 1}
+{'a': 'Num', 'at': 4, 'hi': 5, 'id': 140652126956080, 'lo': 3, 'm2': 7.6000000000000005, 'mu': 4.199999999999999, 'n': 10, 'txt': 'TechnicallyAdvanced:PoorEngineering', 'w': 1}
+{'a': 'Num', 'at': 5, 'hi': 5, 'id': 140652126955984, 'lo': 3, 'm2': 4.4, 'mu': 4.3999999999999995, 'n': 10, 'txt': 'GoodDesign:BoringDesign', 'w': 1}
+{'a': 'Sym', 'at': 6, 'has': {}, 'id': 140652126956944, 'mode': None, 'most': 0, 'n': 0, 'txt': 'thingX'}
+{'a': 'Row', 'cells': [5, 5, 5, 2, 5, 5, 'Bugatti'], 'id': 140651589265776}
+{'a': 'Row', 'cells': [3, 4, 3, 3, 5, 4, 'Ford'], 'id': 140652126957184}
+{'a': 'Row', 'cells': [3, 3, 2, 3, 4, 3, 'BMW'], 'id': 140652126957136}
+{'a': 'Row', 'cells': [4, 4, 3, 5, 4, 4, 'Subaru'], 'id': 140651589204864}
+{'a': 'Row', 'cells': [5, 4, 4, 4, 3, 5, 'VolksWagen'], 'id': 140651589204672}
+{'a': 'Row', 'cells': [4, 4, 5, 3, 3, 4, 'Porsche'], 'id': 140651858399632}
+{'a': 'Row', 'cells': [4, 3, 5, 5, 5, 5, 'Tesla'], 'id': 140651858399584}
+{'a': 'Row', 'cells': [5, 5, 4, 4, 5, 5, 'Honda'], 'id': 140651858399968}
+{'a': 'Row', 'cells': [4, 3, 3, 4, 3, 4, 'Toyota'], 'id': 140651858400064}
+{'a': 'Row', 'cells': [5, 5, 5, 4, 5, 5, 'Mercedes'], 'id': 140651858400160}
+✅ pass: reprows
+ 0
+|.. 0
+|..|.. HighStatusCar:Non-HighStatusCar
+|..|.. 0
+|..|..|.. Expensive:Reasonable
+|..|..|.. GoodQuality:PoorQuality
+|.. 0
+|..|.. EcoFriendly:Not-EcoFriendly
+|..|.. 0
+|..|..|.. TechnicallyAdvanced:PoorEngineering
+|..|..|.. GoodDesign:BoringDesign
+✅ pass: synonyms
+ 0
+|.. 0
+|..|.. 0
+|..|..|.. Bugatti
+|..|..|.. Ford
+|..|.. 0
+|..|..|.. BMW
+|..|..|.. 0
+|..|..|..|.. Subaru
+|..|..|..|.. VolksWagen
+|.. 0
+|..|.. 0
+|..|..|.. Porsche
+|..|..|.. Tesla
+|..|.. 0
+|..|..|.. Honda
+|..|..|.. 0
+|..|..|..|.. Toyota
+|..|..|..|.. Mercedes
+✅ pass: prototypes
+
+A Bugatti
+B Ford
+C BMW
+D Subaru
+E VolksWagen
+F Porsche
+G Tesla
+H Honda
+I Toyota
+J Mercedes
+
+J                                      
+✅ pass: position
+ 0
+|.. 0
+|..|.. 0
+|..|..|.. Bugatti
+|..|..|.. Ford
+|..|.. 0
+|..|..|.. BMW
+|..|..|.. 0
+|..|..|..|.. Subaru
+|..|..|..|.. VolksWagen
+|.. 0
+|..|.. 0
+|..|..|.. Porsche
+|..|..|.. Tesla
+|..|.. 0
+|..|..|.. Honda
+|..|..|.. 0
+|..|..|..|.. Toyota
+|..|..|..|.. Mercedes
+ 0
+|.. 0
+|..|.. HighStatusCar:Non-HighStatusCar
+|..|.. 0
+|..|..|.. Expensive:Reasonable
+|..|..|.. GoodQuality:PoorQuality
+|.. 0
+|..|.. EcoFriendly:Not-EcoFriendly
+|..|.. 0
+|..|..|.. TechnicallyAdvanced:PoorEngineering
+|..|..|.. GoodDesign:BoringDesign
+
+A Bugatti
+B Ford
+C BMW
+D Subaru
+E VolksWagen
+F Porsche
+G Tesla
+H Honda
+I Toyota
+J Mercedes
+
+J
