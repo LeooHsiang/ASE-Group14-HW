@@ -2,12 +2,12 @@ local _ = " "
 return {
       domain="dissementian platforms",
       cols={   
-            {'HighStatusCar', 5,3,3,4,5,4,4,5,4,5, 'Non-HighStatusCar'},
-            {'Expensive', 5,4,3,4,4,4,3,5,3,5, 'Reasonable'},
-            {'GoodQuality', 5,3,2,3,4,5,5,4,3,5, 'PoorQuality'},
-            {'EcoFriendly' , 2,3,3,5,4,3,5,4,4,4, 'Not-EcoFriendly'},
-            {'TechnicallyAdvanced', 5,5,4,4,3,3,5,5,3,5, 'PoorEngineering'},
-            {'GoodDesign', 5,4,3,4,5,4,5,5,4,5, 'BoringDesign'}},
+            {'HighStatusCar', 5,3,3,5,5,4,4,5,2,5, 'Non-HighStatusCar'},
+            {'Expensive', 5,2,2,4,5,3,3,5,2,4, 'Reasonable'},
+            {'GoodQuality', 4,4,3,4,4,5,4,5,3,5, 'PoorQuality'},
+            {'EcoFriendly' , 3,4,3,5,3,3,3,3,2,1, 'Not-EcoFriendly'},
+            {'TechnicallyAdvanced', 4,4,3,5,4,3,3,4,3,5, 'PoorEngineering'},
+            {'GoodDesign', 4,3,2,3,3,3,3,4,2,4, 'BoringDesign'}},
       rows={                      
             { _, _, _, _, _, _, _, _, _, 'Mercedes'},
             { _, _, _, _, _, _, _, _, 'Toyota'},
