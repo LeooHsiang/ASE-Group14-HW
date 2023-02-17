@@ -18,6 +18,7 @@ The test cases for these classes are [here](https://github.com/LeooHsiang/ASE-Gr
 Example implementation: [Source Code in LUA](https://github.com/txt/se22/blob/main/etc/pdf/csv.pdf)
 
 ## Running the Code
+For HW4 Repgrids report, please see the docs file and view hw4_report.md
 
 ## Output 
 
