@@ -58,3 +58,40 @@ def lines(sFilename, fun):
 #not sure if this is right
 def csv(filename, fun):
     lines(sFilename=filename, fun=fun(cells(lines)))
+
+# emulate printf
+# doesnt work correctly because string.format in python uses {} not % operators
+# fmt function not used because of above, instead where function is used, the 
+# formatting is done there
+def fmt(self, sControl, *argv):
+    return sControl.format(*argv)
+
+# print `t` then return it
+def oo(t):
+    td = t.__dict__
+    td['a'] = t.__class__.__name__
+    td['id'] = id(t)
+    print(dict(sorted(td.items())))
+
+# convert `t` to a string. sort named keys. 
+def o(t):
+    if type(t)!=dict and type(t)!=list:
+        return str(t)
+    
+    def fun(k,v):
+        if(str(k).find('_')!=0):
+            v = o(v)
+            return ":" + str(k) + " " + o(v)
+        
+        else:
+            return False
+    array = []
+    if type(t) == dict:
+        for key in t:
+            output = fun(key, t[key])
+            if output:
+                array.append(output)
+            array.sort()
+    elif type(t) == list:
+        array = t
+    return "{" + " ".join(str(val) for val in array) + "}"
