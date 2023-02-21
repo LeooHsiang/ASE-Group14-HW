@@ -23,19 +23,38 @@ def coerce(s):
             return fun(s)
 
 
-def csv(sFilename,fun):
-    """
-        call `fun` on rows (after coercing cell text)
-        :param sFilename: String of the file to read
-        :param fun: function to call per each row
-    """
-    f = io.open(sFilename)
-    while True:
-        s = f.readline()
+# commenting old csv func out 
+# def csv(sFilename,fun):
+#     """
+#         call `fun` on rows (after coercing cell text)
+#         :param sFilename: String of the file to read
+#         :param fun: function to call per each row
+#     """
+#     f = io.open(sFilename)
+#     while True:
+#         s = f.readline()
+#         if s:
+#             t=[]
+#             for s1 in re.findall("([^,]+)" ,s):
+#                 t.append(coerce(s1))
+#             fun(t)
+#         else:
+#             return f.close()
+
+def cells(s):
+    t = []
+    for s1 in re.split("([^,]+)", s):
+        t.append (coerce(s1))
+
+def lines(sFilename, fun):
+    src = io.open(sFilename)
+    while true:
+        s = src.readline()
         if s:
-            t=[]
-            for s1 in re.findall("([^,]+)" ,s):
-                t.append(coerce(s1))
-            fun(t)
+            fun(s)
         else:
-            return f.close()
+            return src.close()
+
+#not sure if this is right
+def csv(filename, fun):
+    lines(sFilename=filename, fun=fun(cells(lines)))
