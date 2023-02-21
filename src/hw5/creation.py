@@ -10,6 +10,16 @@ class Creation():
         else: 
             self.at = 0 
 
+    def range(self, at, txt, lo, hi): 
+        hiv = hi if hi != None else lo
+        return {
+            'at': at, 
+            'txt': txt, 
+            'lo': lo, 
+            'hi': hiv, 
+            'y': self.sym(None, None)
+        }
+
     def num(n: int, s: str): 
         if n is not None: 
             ata = n 
@@ -39,6 +49,20 @@ class Creation():
 
         return config
 
+    def sym(n: int, s: str): 
+        at = n if n != None else 0
+        txt = s if s != None else ""
+
+        return {
+            'at': n, 
+            'txt': txt, 
+            'n': 0, 
+            'mode': None, 
+            'most': 0, 
+            'isSym': True, 
+            'has': {}
+        }
+
     def col(self, n: int, s: str):
 
         if s.find("[A-Z]"): 
@@ -62,3 +86,23 @@ class Creation():
             col.isGoal = False
 
         return col 
+
+    def cols(self, ss, col): 
+        cols = {
+            'names': ss, 
+            'all': [], 
+            'x': [], 
+            'y': []
+        }
+        for n, s in enumerate(ss): 
+            cola = self.col(n, s)
+            if not cola.isIgnored: 
+                if cola.isKlass: 
+                    cols.klass = col
+                if cola.isGoal: 
+                    cols['y'] = cols['y'].append(col)
+                else: 
+                    cols['x'] = cols['x'].append(col)
+            cols['all'] = cols['all'].append(cola)
+
+        return cols 
