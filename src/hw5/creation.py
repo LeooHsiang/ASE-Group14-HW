@@ -1,3 +1,6 @@
+from data import Data 
+from col import Col 
+
 class Creation():
     """
     Summarizes a stream of numbers. 
@@ -10,6 +13,8 @@ class Creation():
         else: 
             self.at = 0 
 
+        data = Data()
+
     def range(self, at, txt, lo, hi): 
         hiv = hi if hi != None else lo
         return {
@@ -21,20 +26,10 @@ class Creation():
         }
 
     def num(n: int, s: str): 
-        if n is not None: 
-            ata = n 
-        else: 
-            ata = 0 
 
-        if s is not None:
-            txta = s 
-        else: 
-            txta = ""
-
-        if txta.find("-$"): 
-            w = -1
-        else: 
-            w = 1
+        ata = n if n is not None else 0 
+        txta = s if s is not None else ""
+        w = -1 if txta.find("-$") else 1
         
         config = {
             'at': ata, 
@@ -63,29 +58,6 @@ class Creation():
             'has': {}
         }
 
-    def col(self, n: int, s: str):
-
-        if s.find("[A-Z]"): 
-            col = self.num(n, s)
-        else: 
-            col = self.sym(n, s)
-        
-        if col.txt.find("X$"): 
-            col.isIgnored = True
-        else: 
-            col.isIgnored = False
-
-        if col.txt.find("!$"): 
-            col.isKlass = True
-        else: 
-            col.isKlass = False
-        
-        if col.txt.find("[!+-]$"): 
-            col.isGoal = True
-        else: 
-            col.isGoal = False
-
-        return col 
 
     def cols(self, ss, col): 
         cols = {
@@ -95,7 +67,7 @@ class Creation():
             'y': []
         }
         for n, s in enumerate(ss): 
-            cola = self.col(n, s)
+            cola = Col(n, s)
             if not cola.isIgnored: 
                 if cola.isKlass: 
                     cols.klass = col

@@ -1,5 +1,4 @@
-from num import Num
-from sym import Sym
+from creation import Creation
 import re
 
 class Cols:
@@ -22,7 +21,7 @@ class Cols:
         # self.y = []
         self.klass = None
         for n, s in enumerate(t):
-            col = Num(n, s) if re.findall("^[A-Z]+", s) else Sym(n, s)
+            col = Creation.num(n, s) if re.findall("^[A-Z]+", s) else Creation.sym(n, s)
             self.all.append(col)
             if not re.findall("X$", s):
                 if re.findall("!$", s):

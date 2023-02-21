@@ -1,9 +1,12 @@
 
 import math 
 
+from creation import *
 from row import Row
+from col import Col
 import config as config
 import util as util
+from string_util import *
 
 
 class Data:
@@ -17,19 +20,19 @@ class Data:
     rows = list of rows
     '''
     def __init__(self):
-        self.rows = list()
+        self.rows = []
         self.cols = None
     
     def read(self, sfile, data):  
         data = Data() 
-        csv(sfile, function(t) row(data, t)))
+        csv(sfile, Row.row(data))
 
         return data
 
     def clone(self, data, ts, data1): 
-        data1 = row(Data(), data.cols.names)
+        data1 = Row.row(Data(), data.cols.names)
         for i in ts: 
-            row(data1, i)
+            Row.row(data1, i)
         return data1
 
     def dist(self,t1,t2, cols = None, d, n, dist1):

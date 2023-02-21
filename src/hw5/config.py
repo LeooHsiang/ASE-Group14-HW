@@ -1,3 +1,5 @@
+import math
+
 global the, Help, Seed
 
 the,help = {},"""
@@ -15,3 +17,12 @@ ACTIONS:
 """
     
 Seed = 927162211
+
+def rint(nlo, nhi): 
+  return math.floor(.5 + rand(nlo, nhi))
+
+def rand(nlo, nhi): 
+  nlo = nlo if nlo is not None else 0 
+  nhi = nhi if nhi is not None else 1 
+  seed = (16807 * Seed) % 2147483647
+  return nlo + (nhi - nlo) * seed / 2147483647
