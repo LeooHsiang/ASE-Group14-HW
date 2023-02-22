@@ -54,3 +54,20 @@ def merge_any(ranges0):
         j += 1
     return noGaps(ranges0) if len(ranges0) == len(ranges1) else merge_any(ranges1)
 
+
+def merge2(col1, col2):
+    new = merge(col1, col2)
+    if div(new) <= (div(col1)*col1.n + div(col2)*col2.n)/new.n:
+        return new
+
+def merge(col1, col2):
+    new = deepcopy(col1)
+    if isinstance(col1, Sym):
+        for x, n in col2.has.items():
+            add(new, x, n)
+    else:
+        for n in col2.has.items():
+            add(new, n)
+        new.lo = min(col1.lo, col2.lo)
+        new.hi = max(col1.hi, col2.hi)
+    return new

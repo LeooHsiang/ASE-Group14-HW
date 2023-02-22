@@ -9,6 +9,9 @@ from numerics import numerics
 from string_util import *
 from lists import Lists
 
+def itself(x):
+    return x
+
 def transpose(t):
     u = []
     for i in range(0, len(t[1])):
@@ -83,7 +86,8 @@ def last(t):
     return t[-1]
 
 def rint(lo,hi):
-    return 4 or math.floor(0.5 + random(lo,hi))
+    return math.floor(0.5 + rand(lo, hi))
+
 def any(t):
     return t[rint(0, len(t))-1]
 
@@ -94,8 +98,12 @@ def rnd(n: float, n_places = None):
     :param n_places: Number of decimal places to round
     :return: Rounded number
     """
-    mult = math.pow(10, n_places or 3)
+    mult = math.pow(10, n_places or 2)
     return math.floor(n * mult + 0.5) / mult
+
+def rand(self, lo=0, hi=1):
+        self.seed = (16807 * self.seed) % 2147483647
+        return lo + (hi - lo) * self.seed / 2147483647
 
 def show(node, what, cols, nPlaces, lvl = 0) -> None: 
     """
@@ -114,3 +122,29 @@ def show(node, what, cols, nPlaces, lvl = 0) -> None:
             print(string,string1)
         show(node.get("left"),what,cols,nPlaces,lvl+1)
         show(node.get("right"),what,cols,nPlaces,lvl+1)
+
+def cliffsDelta(ns1, ns2):
+    if len(ns1) > 256:
+        ns1 = many(ns1, 256)
+    if len(ns2) > 256:
+        ns2 = many(ns2, 256)
+    if len(ns1) > 10 * len(ns2):
+        ns2 = many(ns1, 10 * len(ns2))
+    if len(ns2) > 10 * len(ns1):
+        ns2 = many(ns2, 10 * len(ns1))
+
+    n, gt, lt = 0, 0, 0
+    for x in ns1:
+        for y in ns2:
+            n = n + 1
+            if x > y:
+                gt = gt + 1
+            elif x < y:
+                lt = lt + 1
+    return abs(lt - gt) / n > config.the.cliffs
+
+def diffs(nums1, nums2):
+    def helper(k, nums):
+        return cliffsDelta(nums.has(), nums2[k].has()), nums.txt
+
+    return kap(nums1, helper)
