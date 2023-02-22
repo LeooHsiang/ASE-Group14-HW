@@ -35,7 +35,7 @@ class Data:
             Row.row(data1, i)
         return data1
 
-    def dist(self,t1,t2, cols = None, d, n, dist1):
+    def dist(self,t1,t2, d, n, dist1, cols = None):
         '''
         returns 0..1 distance `row1` to `row2`
         '''
@@ -105,3 +105,18 @@ class Data:
                 print(o(stats(tree.data)))
             self.showTree(tree.left, lvl + 1)
             self.showTree(tree.right, lvl + 1)
+
+    def sway(self, worker, best, rest):
+        def worker(rows, worse, above):
+            if len(rows) <= len(self.rows) ** config.the["min"]:
+                return rows, many(worse, config.the['rest'] * len(rows))
+            l, r, A, B = self.half(rows, cols, above)
+            if self.better(B, A):
+                l, r, A, B = r, l, B, A
+            for i in r:
+                worse.append(i)
+
+            return worker(l, worse, A)
+
+        best, rest = worker(self.rows, [])
+        return Data.clone(self, best), Data.clone(self, rest)
