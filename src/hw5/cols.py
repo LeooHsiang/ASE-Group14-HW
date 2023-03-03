@@ -1,5 +1,5 @@
-from creation import Creation
-import re
+from num import Num
+from sym import Sym
 
 class Cols:
     '''Declares a column class that holds a column of data'''
@@ -15,18 +15,26 @@ class Cols:
         :type klass: (col) single dependent col
         
         '''
-        # self.names = t
-        # self.all = []
-        # self.x = []
-        # self.y = []
+        self.names = t
+        self.all = []
+        self.x = []
+        self.y = []
         self.klass = None
-        for n, s in enumerate(t):
-            col = Creation.num(n, s) if re.findall("^[A-Z]+", s) else Creation.sym(n, s)
+
+        for col_name in t:
+            if col_name[0].isupper():
+                col = Num(t.index(col_name), col_name)
+            else:
+                col = Sym(t.index(col_name), col_name)
             self.all.append(col)
-            if not re.findall("X$", s):
-                if re.findall("!$", s):
-                    self.klass = col
-                self.y.append(col) if re.findall("[!+-]$", s) else self.x.append(col)
+
+            if not col_name[-1] == "X":
+                if "+" in col_name or "!" in col_name:
+                    self.y.append(col)
+                else:
+                    self.x.append(col)
+                if "!" in col_name:
+                    self.klass=col
                 
     def add(self, row):
         for _,t in enumerate([self.x, self.y]):

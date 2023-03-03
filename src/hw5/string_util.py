@@ -1,7 +1,38 @@
+from pathlib import Path
 import re
 import io
+import sys
 
+
+arg = sys.argv[1:]
+
+def settings(s):
+    t={}
+    res = re.findall("\n[\s]+[-][\S]+[\s]+[-][-]([\S]+)[^\n]+= ([\S]+)", s)
+    for k,v in res:
+        t[k] = coerce(v)
+    return t
 # return int or float or bool or string from `s`
+"""
+Reads in default options and stores in configuration dictionary "the"
+t = dictionary of options
+"""
+def cli(options):
+  for k,v in options.items():
+    v = str(v)
+    for n, x in enumerate(sys.argv):
+      if (x == ("-" + k[0:1])) or (x == ("--" + k)):
+        more = False
+        try: 
+          sys.argv[n+1]
+          v = sys.argv[n+1]
+          break
+        except:
+          more = False
+        v = v == "False" and True or v == "True" and False or more
+    options[k] = coerce(v)
+  return options
+
 def coerce(s):
     def fun(s1):
         if s1 == "true" or s1 == "True":
@@ -48,16 +79,25 @@ def cells(s):
 
 def lines(sFilename, fun):
     src = io.open(sFilename)
-    while true:
+    while True:
         s = src.readline()
         if s:
             fun(s)
         else:
             return src.close()
 
-#not sure if this is right
-def csv(filename, fun):
-    lines(sFilename=filename, fun=fun(cells(lines)))
+def csv(sFilename, fun):
+    sFilename = Path(sFilename)
+    if sFilename.exists() and sFilename.suffix == '.csv':
+        t = []
+        with open(sFilename.absolute(), 'r', encoding='utf-8') as file:
+            for _, line in enumerate(file):
+                row = list(map(coerce, line.strip().split(',')))
+                t.append(row)
+                fun(row)
+    else:
+        print("File path does not exist OR File not csv, given path: ", sFilename.absolute())
+        return
 
 # emulate printf
 # doesnt work correctly because string.format in python uses {} not % operators

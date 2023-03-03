@@ -1,4 +1,4 @@
-from test import show_settings, test_copy, test_every, test_nums, test_position, test_prototypes, test_repCols, test_repRows, test_syms, test_synonyms
+from test import checkHalf, checkClone, checkBins, checkSway, checkTree, checkDist, checkCliffs, show_settings, checkRand, checkSome, checkNums, checkSyms, checkData, checkCsv
 from string_util import settings
 from string_util import cli
 from test import *
@@ -37,15 +37,19 @@ def eg(key,string,fun):
   egs[key]=fun
   config.help = config.help + ("  -g  %s\t%s\n" % (key,string))
   
-eg("the", "show settings", show_settings)
-eg("copy", "check copy", test_copy)
-eg("sym", "check syms", test_syms)
-eg("num", "check nums", test_nums)
-eg("repcols", "check repcols", test_repCols)
-eg("reprows","checking reprows", test_repRows)
-eg("synonyms", "check repcols cluster", test_synonyms)
-eg('prototypes','checking reprows cluster', test_prototypes)
-eg('position','where\'s wally', test_position)
-eg('every','the whole enchilada', test_every)
+eg("the", "show options", show_settings)
+eg("rand", "demo random number generation", checkRand)
+eg("some", "demo of reservoir sampling", checkSome)
+eg("nums","demo of NUM", checkNums)
+eg("syms","demo SYMS", checkSyms)
+eg("csv", "reading csv files", checkCsv)
+eg("data", "showing data sets", checkData)
+eg("cliffs", "stats tests", checkCliffs)
+eg("clone","replicate structure of a DATA", checkClone)
+eg("dist","distance test", checkDist)
+eg("half","divide data in half", checkHalf)
+eg("tree","make snd show tree of clusters", checkTree)
+eg("sway","optimizing", checkSway)
+eg("bins","find deltas between best and rest", checkBins)
 
 main(config.the, config.help, egs)
