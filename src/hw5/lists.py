@@ -57,6 +57,7 @@ class Lists():
         return cp.deepcopy(t)
 
     def per(t): 
+        p = 0.5
         p=math.floor(((p or .5)*len(t))+.5)
         return t[max(1,min(len(t),p))] 
 
