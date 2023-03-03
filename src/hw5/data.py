@@ -2,13 +2,13 @@
 import math
 from operator import itemgetter
 
-from util import many
+from util import many, any
 from row import Row
 from cols import Cols
 import config as config
 import util as util
 from string_util import *
-import numerics as numerics
+from numerics import numerics
 from lists import Lists
 
 
@@ -48,8 +48,6 @@ class Data:
 
         return Lists.kap(cols or self.cols.y, fun)
 
-        return data
-
     def clone(self, init={}):
         data = Data([self.cols.names])
         _ = list(map(data.add, init))
@@ -59,9 +57,11 @@ class Data:
         '''
         returns 0..1 distance `row1` to `row2`
         '''
-        n,d = 0,0
-        for _,col in enumerate(cols or self.cols.x):
-            n = n + 1
+        n, d = 0, 0
+        c = cols or self.cols.x
+
+        for col in c:
+            n += 1
             d = d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** config.the['p']
         return (d/n) ** (1/config.the['p'])
 
@@ -87,37 +87,47 @@ class Data:
             else:
                 right.append(tmp['row'])
         return left, right, A, B, mid, c
+
     def around(self, row1, rows=None, cols=None):
         def function(row2):
             return {'row': row2, 'dist': self.dist(row1, row2, cols)}
 
         return sorted(list(map(function, rows or self.rows)), key=itemgetter('dist'))
-    def tree(self, rows, cols, above, here): 
-        rows = rows or self.rows 
-        here = {'data': self.clone(rows)}
-        if len(rows) >= 2 * len(self.rows) ^ config.the['min']: 
-            left, right, A, B, c = self.half(rows, cols, above)
-            here.left = self.tree(left, cols, A)
-            here.right = self.tree(right, cols, B)
-        return here 
-
-    def showTree(self, tree, lvl, post): 
-        if tree is not None: 
-            lvl = lvl or 0 
-            print("%s[%s] " % lvl, tree.data.rows) 
-            if lvl == 0: 
-                print(o(Data.stats(tree.data)))
-            self.showTree(tree.left, lvl + 1)
-            self.showTree(tree.right, lvl + 1)
-
-    def sway(self, rows = None, min = None, cols = None, above = None):
+    
+    def tree(self, rows=None, min=None, cols=None, above=None):
         rows = rows or self.rows
-        min = min or math.pow(len(rows), config.the['min'])
+        min = min or len(rows) ** config.the['min']
         cols = cols or self.cols.x
-        node = {'data' : self.clone(rows)}
-        if len(rows) > 2*min:
-            left, right, node['A'], node['B'], node['mid'], _ = self.half(rows,cols,above)
-            if self.better(node['B'],node['A']):
-                left,right,node['A'],node['B'] = right,left,node['B'],node['A']
-            node['left']  = self.sway(left,  min, cols, node['A'])
+        node = {'data': self.clone(rows)}
+        
+        if len(rows) >= 2 * min:
+            left, right, node['A'], node['B'], node['mid'], _ = self.half(rows, cols, above)
+            node['left'] = self.tree(left, min, cols, node['A'])
+            node['right'] = self.tree(right, min, cols, node['B'])
         return node
+
+    def sway(self):
+        data = self
+
+        def worker(rows, worse, above=None):
+            if len(rows) <= len(data.rows) ** config.the['min']:
+                return rows, many(worse, config.the['rest'] * len(rows))
+            else:
+                l, r, A, B, _, _ = self.half(rows, None, above)
+                if self.better(B, A):
+                    l, r, A, B = r, l, B, A
+                for row in r:
+                    worse.append(row)
+                return worker(l, worse, A)
+
+        best, rest = worker(data.rows, [])
+        return self.clone(best), self.clone(rest)
+    def better(self, row1, row2):
+        s1, s2, ys = 0, 0, self.cols.y
+        for col in ys:
+            x = col.norm(row1.cells[col.at])
+            y = col.norm(row2.cells[col.at])
+            s1 -= math.exp(col.w * (x - y) / len(ys))
+            s2 -= math.exp(col.w * (y - x) / len(ys))
+
+        return s1 / len(ys) < s2 / len(ys)

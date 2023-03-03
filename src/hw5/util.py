@@ -61,9 +61,11 @@ def rnd(n, nPlaces = 3):
     mult = 10**nPlaces
     return math.floor(n * mult + 0.5) / mult
 
-def rand(lo=0, hi=1):
-        seed = (16807 * config.Seed) % 2147483647
-        return lo + (hi - lo) * seed / 2147483647
+def rand(lo, hi, mSeed = None):
+    lo, hi = lo or 0, hi or 1
+    Seed = config.Seed
+    Seed = 1 if mSeed else (16807 * Seed) % 2147483647
+    return lo + (hi-lo) * Seed / 2147483647
 def many(t,n):
     u=[]
     for _ in range(1,n+1):
@@ -104,3 +106,13 @@ def value(has,nB = None, nR = None, sGoal = None):
             r = r + n
     b,r = b/(nB+1/float("inf")), r/(nR+1/float("inf"))
     return b**2/(b+r)
+
+def showTree(node, what, cols, nPlaces, lvl = 0):
+    if node:
+        print('|.. ' * lvl + '[' + str(len(node['data'].rows)) + ']' + '  ', end = '')
+        if not node.get('left') or lvl==0:
+            print(node['data'].stats("mid",node['data'].cols.y,nPlaces))
+        else:
+            print('')
+        showTree(node.get('left'), what,cols, nPlaces, lvl+1)
+        showTree(node.get('right'), what,cols,nPlaces, lvl+1)
