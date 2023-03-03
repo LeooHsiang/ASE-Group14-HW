@@ -34,7 +34,7 @@ def checkSome():
   num1 = Num()
   for i in range(1, 10001):
     num1.add(i)
-    print(num1.has)
+  print(num1.has)
 
 
 def checkNums():
