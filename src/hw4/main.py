@@ -38,6 +38,7 @@ def eg(key,string,fun):
   config.help = config.help + ("  -g  %s\t%s\n" % (key,string))
   
 eg("the", "show settings", show_settings)
+eg("copy", "check copy", test_copy)
 eg("sym", "check syms", test_syms)
 eg("num", "check nums", test_nums)
 eg("repcols", "check repcols", test_repCols)
