@@ -1,13 +1,13 @@
 import io
 import json
 import math
-import random
 import re
 from data import Data
 from copy import deepcopy
 from numerics import numerics
 from string_util import *
 from lists import Lists
+import config as config
 
 def itself(x):
     return x
@@ -101,9 +101,11 @@ def rnd(n: float, n_places = None):
     mult = math.pow(10, n_places or 2)
     return math.floor(n * mult + 0.5) / mult
 
-def rand(self, lo=0, hi=1):
-        self.seed = (16807 * self.seed) % 2147483647
-        return lo + (hi - lo) * self.seed / 2147483647
+def rand(lo, hi, mSeed = None):
+    lo, hi = lo or 0, hi or 1
+    Seed = config.Seed
+    Seed = 1 if mSeed else (16807 * Seed) % 2147483647
+    return lo + (hi-lo) * Seed / 2147483647
 
 def show(node, what, cols, nPlaces, lvl = 0) -> None: 
     """
@@ -122,29 +124,3 @@ def show(node, what, cols, nPlaces, lvl = 0) -> None:
             print(string,string1)
         show(node.get("left"),what,cols,nPlaces,lvl+1)
         show(node.get("right"),what,cols,nPlaces,lvl+1)
-
-def cliffsDelta(ns1, ns2):
-    if len(ns1) > 256:
-        ns1 = many(ns1, 256)
-    if len(ns2) > 256:
-        ns2 = many(ns2, 256)
-    if len(ns1) > 10 * len(ns2):
-        ns2 = many(ns1, 10 * len(ns2))
-    if len(ns2) > 10 * len(ns1):
-        ns2 = many(ns2, 10 * len(ns1))
-
-    n, gt, lt = 0, 0, 0
-    for x in ns1:
-        for y in ns2:
-            n = n + 1
-            if x > y:
-                gt = gt + 1
-            elif x < y:
-                lt = lt + 1
-    return abs(lt - gt) / n > config.the.cliffs
-
-def diffs(nums1, nums2):
-    def helper(k, nums):
-        return cliffsDelta(nums.has(), nums2[k].has()), nums.txt
-
-    return kap(nums1, helper)
