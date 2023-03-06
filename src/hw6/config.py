@@ -23,7 +23,7 @@ OPTIONS:
   -s  --seed    random number seed           = 937162211
 """
     
-Seed = 927162211
+Seed = 937162211
 
 n = 0
 
@@ -35,3 +35,7 @@ def rand(nlo, nhi):
   nhi = nhi if nhi is not None else 1 
   seed = (16807 * Seed) % 2147483647
   return nlo + (nhi - nlo) * seed / 2147483647
+
+def rnd(n, nPlaces=3):
+    mult=10**(nPlaces or 3)
+    return math.floor(n*mult + 0.5)/mult
