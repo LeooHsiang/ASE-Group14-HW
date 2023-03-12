@@ -110,3 +110,20 @@ class Data:
                 print(o(stats(tree.data)))
             self.showTree(tree.left, lvl + 1)
             self.showTree(tree.right, lvl + 1)
+
+    def sway(self):
+        data = self
+
+        def worker(rows, worse, evals0=None, above=None):
+            if len(rows) <= len(data.rows) ** config.the['min']:
+                return rows, many(worse, config.the['rest'] * len(rows)), evals0
+            else:
+                l, r, A, B, c, evals = self.half(rows, cols, above)
+                if self.better(B, A):
+                    l, r, A, B = r, l, B, A
+                for row in r:
+                    worse.append(row)
+                return worker(l, worse, evals + evals0, A)
+
+        best, rest, evals = worker(data.rows, [], 0)
+        return self.clone(best), self.clone(rest), evals
