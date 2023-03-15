@@ -1,5 +1,6 @@
 import math 
 import config
+import num
 
 def erf(x, a1, a2, a3, a4, a5, p, sign): 
     """
@@ -63,5 +64,49 @@ def delta(i, other):
     num = math.abs(y.i["mu"] - z.i["mu"])
     den = (e + y.i["sd"]**2 / y.i["n"] + z.i["sd"]**2 / z.i["n"]) ** .5
     return num / den 
+
+def bootstrap(y0, z0): 
+
+    x, y, z, yhat, zhat = num.Num(), num.Num(), num.Num(), {}, {}
+    for _, y1 in enumerate(y0): 
+        num.add(x, y1)
+        num.add(y, y1)
+    for _, z1 in enumerate(z0): 
+        num.add(x, z1)
+        num.add(z, z1)
+    xmu, ymu, zmu = x.i["mu"], y.i["mu"], z.i["mu"]
+
+    yhat, zhat = {}, {}
+    for _, y1 in enumerate(y0): 
+        yhat[1 + len(yhat)] = y1 - ymu + xmu
+    for _, z1 in enumerate(z0): 
+        zhat[1 + len(zhat)] = z1 - zmu + xmu
+
+    tobs = delta(y, z)
+    n = 0 
+    for ele in range(1, config.the["bootstrap"]): 
+        if delta(num.Num(samples(yhat)), num.Num(samples(zhat))) > tobs: 
+            n = n + 1
+    val = n / config.the["bootstrap"]
+    return val >= config.the["conf"]
+
+def rx(t, s): 
+    t.sort_values(ascending = True, inplace = True) 
+    r = {
+        "name": s if s is not None else "", 
+        "rank": 0, 
+        "n" : len(t), 
+        "show" : "", 
+        "has" : t
+    }
+    return r 
+
+def mid(t): 
+    t = t.has       # TODO: not quite sure about this line here
+    n = len(t) / 2
+    if len(t) % 2 == 0 :
+        return (t[n] + t[n + 1]) / 2
+    else: 
+        return t[n + 1]
 
 
