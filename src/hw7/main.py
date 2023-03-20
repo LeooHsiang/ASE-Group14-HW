@@ -102,11 +102,27 @@ def rx(t, s):
     return r 
 
 def mid(t): 
-    t = t.has       # TODO: not quite sure about this line here
+    t = t.has if t.has else t        # TODO: not quite sure about this line here
     n = len(t) / 2
     if len(t) % 2 == 0 :
         return (t[n] + t[n + 1]) / 2
     else: 
         return t[n + 1]
+
+def div(t): 
+    t = t.has if t.has else t 
+    val = len(t) / 10   
+    return (t[val * 9] - t[val]) / 2.56
+
+def merge(rx1, rx2): 
+    rx3 = rx({}, rx1.name)
+    for _, t in enumerate(zip(rx1.has, rx2.has)): #TODO this may be an issue, line 100 in stats.lua
+        for _, x in enumerate(t): 
+            rx3.has[1 + len(rx3.has)] = x
+    
+    rx3.has.sort_values(ascending = True, inplace = True) 
+    rx3.n = len(rx3.has)
+    return rx3
+
 
 
