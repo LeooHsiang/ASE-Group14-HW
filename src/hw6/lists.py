@@ -26,6 +26,22 @@ class Lists():
             u[k or len(u)] = v
         return u
 
+    def dkap(t, fun):
+        u = {}
+        for k,v in t.items():
+            v, k = fun(k,v)
+            u[k or len(u)] = v
+        return u
+    
+    def kap2(table, fun):
+        newTable = {}
+        for k, v in table.items():
+            v, k = fun(k, v)
+            if k is None:
+                newTable[len(newTable) + 1] = v
+            else:
+                newTable[k] = v
+        return newTable
     # sorted by `fun` (default= `<`)
     def sort(t, fun):
         t = sorted(t.items(), key=fun)

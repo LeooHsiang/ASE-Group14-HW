@@ -91,10 +91,9 @@ def cliffsDelta(ns1,ns2):
     return abs(lt - gt)/n > config.the['cliffs']
 
 def diffs(nums1, nums2):
-    def helper(k, nums):
-        return cliffsDelta(nums.has(), nums2[k].has()), nums.txt
-
-    return Lists.kap(nums1, helper)
+    def kap(nums, fn):
+        return [fn(k, v) for k, v in enumerate(nums)]
+    return kap(nums1, lambda k, nums: (cliffsDelta(nums.col.has, nums2[k].col.has), nums.col.txt))
 
 def value(has,nB = None, nR = None, sGoal = None):
     sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
@@ -116,3 +115,41 @@ def showTree(node, what, cols, nPlaces, lvl = 0):
             print('')
         showTree(node.get('left'), what,cols, nPlaces, lvl+1)
         showTree(node.get('right'), what,cols,nPlaces, lvl+1)
+def dkap(t, fun):
+    u = {}
+    for k,v in t.items():
+        if(k and v is not None):
+            v, k = fun(k,v) 
+            u[k or len(u)] = v
+    return u
+
+def firstN(sorted_ranges, scoreFun):
+    print()
+    for r in sorted_ranges:
+        print(r['range']['txt'], r['range']['lo'], r['range']['hi'], rnd(r['val']), dict(r['range']['y'].has))
+    first = sorted_ranges[0]['val']
+
+    def useful(range):
+        if range['val'] > 0.05 and range['val'] > first / 10:
+            return range
+    sorted_ranges = [s for s in sorted_ranges if useful(s)]
+    most: int = -1
+    out: int = -1
+
+    for n in range(len(sorted_ranges)):
+        tmp, rule = scoreFun([r['range'] for r in sorted_ranges[:n+1]])
+
+        if tmp is not None and tmp > most:
+            out, most = rule, tmp
+
+    return out, most
+
+def prune(rule, maxSize):
+    n=0
+    for txt,ranges in rule.items():
+        n = n+1
+        if len(ranges) == maxSize[txt]:
+            n=n+1
+            rule[txt] = None
+    if n > 0:
+        return rule

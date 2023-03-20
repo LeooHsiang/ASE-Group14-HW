@@ -2,8 +2,7 @@ from copy import deepcopy
 from math import inf, floor
 from sym import Sym
 import config as config
-import util as util
-from creation import *
+
 
 def bins(cols, rowss):
     out = []
@@ -23,14 +22,6 @@ def bins(cols, rowss):
         out.append(r)
     return out
 
-def merge_any(ranges0):
-    def noGaps(t):
-        for j in range(1,len(t)):
-            t[j]['lo'] = t[j-1]['hi']
-        t[0]['lo']  = float("-inf")
-        t[len(t)-1]['hi'] =  float("inf")
-        return t
-    
 def RANGE(at,txt,lo,hi=None):
     return {'at':at,'txt':txt,'lo':lo,'hi':lo or hi or lo,'y':Sym()}
 
@@ -45,7 +36,7 @@ def bin(col, x):
     tmp = (col.hi - col.lo) / (config.the["bins"] - 1)
     return 1 if col.hi == col.lo else floor(x / tmp + 0.5) * tmp
 
-def merges(ranges0,nSmall,nFar):
+def merge_any(ranges0):
     def noGaps(t):
         for j in range(1,len(t)):
             t[j]['lo'] = t[j-1]['hi']
@@ -53,30 +44,23 @@ def merges(ranges0,nSmall,nFar):
         t[len(t)-1]['hi'] =  float("inf")
         return t
 
-    def try2Merge(left,right,j):
-        y = merged(left.y, right.y, nSmall, nFar)
-        if y: 
-            j = j+1
-            left.hi, left.y = right.hi, y
-        return j , left 
-
-    ranges1,j, here = [],0, None
-    while j < len(ranges0):
-        here = ranges0[j]
-        if j < len(ranges0) - 1:
-            j,here = try2Merge(here, ranges0[j+1], j)
-        j=j+1
-        ranges1.append(here)
-    return noGaps(ranges0) if len(ranges0)==len(ranges1) else merges(ranges1,nSmall,nFar)
+    ranges1,j = [],0
+    while j <= len(ranges0)-1:
+        left = ranges0[j]
+        right = None if j == len(ranges0)-1 else ranges0[j+1]
+        if right:
+            y = merge2(left['y'], right['y'])
+            if y:
+                j = j+1
+                left['hi'], left['y'] = right['hi'], y
+        ranges1.append(left)
+        j = j+1
+    return noGaps(ranges0) if len(ranges0)==len(ranges1) else merge_any(ranges1)
 
 
-def merged(col1, col2, nSmall, nFar):
+def merge2(col1, col2):
     new = merge(col1,col2)
-    if nSmall and col1.n < nSmall or col2.n < nSmall:
-        return new
-    if nFar and not type(col1) == Sym and abs(col1.div() - col2.div()) < nFar:
-        return new
-    if new.div() <= (col1.div() * col1.n + col2.div() * col2.n) / new.n:
+    if new.div() <= (col1.div()*col1.n + col2.div()*col2.n)/new.n:
         return new
 
 def merge(col1, col2):

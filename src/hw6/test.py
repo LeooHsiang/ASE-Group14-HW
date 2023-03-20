@@ -6,7 +6,6 @@ from num import Num
 from lists import Lists
 from data import Data
 from sym import Sym
-from col import Col
 
 ##################
 ### test functions
@@ -121,12 +120,9 @@ def checkDist():
 def checkHalf():
   # Checks to make sure that the data can be split in half correctly
     data = Data(config.the['file'])
-    left,right,A,B,mid,c = data.half()
+    left,right,A,B,c,_ = data.half() 
     print(len(left),len(right))
     l,r = data.clone(left), data.clone(right)
-    print(A.cells,c)
-    print(mid.cells)
-    print(B.cells)
     print("l",l.stats('mid', l.cols.y, 2))
     print("r",r.stats('mid', r.cols.y, 2))
  
@@ -140,7 +136,7 @@ def checkTree():
 def checkSway():
   # Checks to make sure the sway function works properly
     data = Data(config.the['file'])
-    best,rest = data.sway()
+    best,rest, _ = data.sway()
     print("\nall ", data.stats('mid', data.cols.y, 2))
     print("    ", data.stats('div', data.cols.y, 2))
     print("\nbest",best.stats('mid', best.cols.y, 2))
@@ -163,7 +159,7 @@ def checkBins():
   # Checks to make sure the bins works correctly
     b4 = ""
     data = Data(config.the['file'])
-    best,rest = data.sway()
+    best,rest, _ = data.sway()
     print("all","","","",{'best':len(best.rows), 'rest':len(rest.rows)})
     for k,t in enumerate(bins(data.cols.x,{'best':best.rows, 'rest':rest.rows})):
         for range in t:
@@ -175,14 +171,16 @@ def checkBins():
             range['y'].has)
       
 def test_xpln():
-  data = Data.read(the['file'])
-  best, rest, evals = sway(data)
-  rule, most = xpln(data, best, rest)
-  print("\n-----------\nexplain=", o(showRule(rule)))
-  data1 = DATA.clone(data, selects(rule, data['rows']))
-  print("all               ", o(stats(data)), o(stats(data, div)))
-  print("sway with {%5s} evals".format(evals), o(stats(best)), o(stats(best, div)))
-  print("xpln on   {%5s} evals".format(evals), o(stats(data1)), o(stats(data1, div)))
-  top, _ = better(data, len(best['rows']))
-  top = DATA.clone(data, top)
-  print("sort with {%5s} evals".format(len(data['rows'])), o(stats(top)), o(stats(top, div)))
+    data = Data(config.the['file'])
+    best,rest,evals = data.sway()
+    rule,most= data.xpln(best,rest)
+    print("\n-----------\nexplain=", data.showRule(rule))
+    selects = data.selects(rule,data.rows)
+    data_selects = [s for s in selects if s!=None]
+    data1= data.clone(data_selects)
+    print("all               ",data.stats('mid', data.cols.y, 2),data.stats('div', data.cols.y, 2))
+    print("sway with",evals,"evals",best.stats('mid', best.cols.y, 2),best.stats('div', best.cols.y, 2))
+    print("xpln on",evals,"evals",data1.stats('mid', data1.cols.y, 2),data1.stats('div', data1.cols.y, 2))
+    top,_ = data.betters(len(best.rows))
+    top = data.clone(top)
+    print("sort with",len(data.rows),"evals",top.stats('mid', top.cols.y, 2),top.stats('div', top.cols.y, 2))
