@@ -164,5 +164,37 @@ def scottKnow(rxs, all, cohen):
     recurse(1, len(rxs), 1)
     return rxs
 
+def tiles(rxs): 
+    """ss; makes on string per treatment showing rank, distribution, and values"""
 
+    lo, hi = math.inf, -1 * math.inf
+    for _, rx in enumerate(rxs): 
+        lo = min(lo, rx.has[1])
+        hi = max(hi, rx.has[len(rx.has)])
+    for _, rx in enumerate(rxs): 
+        t, u = rx.has, {}
+        def of(x, most): 
+            return max(1, min(most, x))
+        def at(x): 
+            return t[of(len(t) * x // 1, len(t))]
+        def pos(x): 
+            return math.floor(of(config.the['width'] * (x -lo) / ( hi - lo + 1E-32), config.the['width'] ) )
+        
+        for i in range(1, config.the['width']): 
+            u[1 + len(u)] = " "
+        a,b,c,d,e= at(.1), at(.3), at(.5), at(.7), at(.9) 
+        A,B,C,D,E= pos(a), pos(b), pos(c), pos(d), pos(e)
 
+        for i in range(A, B): 
+            u[i] = "-"
+        for i in range(D, E): 
+            u[i] = "-"
+        
+        u[config.the['width'] / 2] = "|"
+        u[C] = "*"
+        rx.show = u + " {" + config.the['Fmt'].format(a)
+        for x in [b, c, d, e]: 
+            rx.show = rx.show + ", " + config.the['Fmt'].format(x)
+        rx.show = rx.show + "}"
+
+    return rxs
