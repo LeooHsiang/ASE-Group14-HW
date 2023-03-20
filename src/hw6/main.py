@@ -1,4 +1,4 @@
-from test import checkHalf, checkClone, checkBins, checkSway, checkTree, checkDist, checkCliffs, show_settings, checkRand, checkSome, checkNums, checkSyms, checkData, checkCsv
+from test import test_xpln, checkCsv, checkHalf, checkClone, checkBins, checkSway, checkTree, checkDist, checkCliffs, show_settings, checkRand, checkSome, checkNums, checkSyms, checkData, checkCsv
 from string_util import settings
 from string_util import cli
 from test import *
@@ -44,12 +44,13 @@ eg("nums","demo of NUM", checkNums)
 eg("syms","demo SYMS", checkSyms)
 eg("csv", "reading csv files", checkCsv)
 eg("data", "showing data sets", checkData)
-eg("cliffs", "stats tests", checkCliffs)
 eg("clone","replicate structure of a DATA", checkClone)
+eg("cliffs", "stats tests", checkCliffs)
 eg("dist","distance test", checkDist)
 eg("half","divide data in half", checkHalf)
 eg("tree","make snd show tree of clusters", checkTree)
 eg("sway","optimizing", checkSway)
 eg("bins","find deltas between best and rest", checkBins)
+eg("xpln", "explore explanation sets", test_xpln)
 
 main(config.the, config.help, egs)
