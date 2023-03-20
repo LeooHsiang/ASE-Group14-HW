@@ -5,30 +5,39 @@ import config as config
 import util as util
 from creation import *
 
-def bins(cols,rowss):
+def bins(cols, rowss):
+    out = []
+    for col in cols:
+        ranges = {}
 
-    def with1Col(col):
-        n,ranges = withAllRows(col)
-        ranges   = sorted(list(map(ranges.values(), itself)),key = lambda k: k['lo'])
-        if   type(col) == Sym:
-            return ranges 
-        else:
-            return merges(ranges, n/config.the["bins"], config.the["d"]*col.div())
-    def withAllRows(col):
-        def xy(x,y):
-            if x != "?":
-                n = n + 1
-                k = bin(col,x)
-                ranges[k] = ranges.get(k, Range(col.at,col.txt,x))
-                extend(ranges[k], x, y)
+        for y, rows in rowss.items():
+            for row in rows:
+                x = row.cells[col.at]
+                if x != "?":
+                    k = bin(col, x)
+                    ranges[k] = ranges.get(k, RANGE(col.at, col.txt, x))
+                    extend(ranges[k], x, y)
 
-        n,ranges = 0,{}
-        for y,rows in rowss.items():
-            for _,row in enumerate(rows):
-                xy(row.cells[col.at],y)
-        return n, ranges 
+        ranges = list(dict(sorted(ranges.items())).values())
+        r = ranges if isinstance(col, Sym) else merge_any(ranges)
+        out.append(r)
+    return out
 
-    return list(map(cols, with1Col))
+def merge_any(ranges0):
+    def noGaps(t):
+        for j in range(1,len(t)):
+            t[j]['lo'] = t[j-1]['hi']
+        t[0]['lo']  = float("-inf")
+        t[len(t)-1]['hi'] =  float("inf")
+        return t
+    
+def RANGE(at,txt,lo,hi=None):
+    return {'at':at,'txt':txt,'lo':lo,'hi':lo or hi or lo,'y':Sym()}
+
+def extend(range,n,s):
+    range['lo'] = min(n, range['lo'])
+    range['hi'] = max(n, range['hi'])
+    range['y'].add(s)
 
 def bin(col, x):
     if x == "?" or isinstance(col, Sym):

@@ -175,7 +175,7 @@ def checkBins():
             range['y'].has)
       
 def test_xpln():
-  data = DATA.read(the['file'])
+  data = Data.read(the['file'])
   best, rest, evals = sway(data)
   rule, most = xpln(data, best, rest)
   print("\n-----------\nexplain=", o(showRule(rule)))
