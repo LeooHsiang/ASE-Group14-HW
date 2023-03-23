@@ -5,7 +5,7 @@ the = {
     "conf" : 0.05, 
     "cliff" : .4, 
     "cohen" : .35,
-    "Fmt" : "%6.2f",
+    "Fmt" : "{:.2f}",
     "width" : 40
 }
 
