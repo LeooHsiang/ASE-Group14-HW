@@ -160,43 +160,40 @@ def scottKnot(rxs):
     recurse(0, len(rxs) - 1, 1)
     return rxs
 
-def tiles(rxs): 
+def tiles(rxs):
     """ss; makes on string per treatment showing rank, distribution, and values"""
-    def of(x,most):
-        return int(max(0, min(most, x)))
 
-    def at(x):
-        return t[of(len(t)*x//1, len(t))]
-
-    def pos(x):
-        return math.floor(of(config.the["width"] * (x-lo)/(hi-lo+1E-32)//1, config.the["width"]))
-    
-    lo = float('inf')
-    hi = -float('inf')
-
-    for rx in rxs: 
-        lo, hi = min(lo,rx['has'][0]), max(hi, rx['has'][len(rx['has'])-1])
-
+    huge = math.inf
+    lo, hi = huge, -math.inf
     for rx in rxs:
-        t,u = rx['has'],[]
-    
+        lo, hi = min(lo, rx["has"][0]), max(hi, rx["has"][len(rx["has"]) - 1])
+    for rx in rxs:
+        t, u = rx["has"], []
 
-    for i in range(0,config.the["width"]+1):
-        u.append(" ")
+        def of(x, most):
+            return int(max(1, min(x, most)))
 
-    a, b, c, d, e= at(.1), at(.3), at(.5), at(.7), at(.9) 
-    A, B, C, D, E= pos(a), pos(b), pos(c), pos(d), pos(e)
+        def at(x):
+            return t[of(len(t) * x//1, len(t))]
 
-    for i in range(A,B+1):
-        u[i] = "-"
-    
-    for i in range(D,E+1):
-        u[i] = "-"
+        def pos(x):
+            return math.floor(of(config.the['width'] * (x - lo) / (hi - lo + 1E-32) // 1, config.the['width']))
 
-    u[config.the["width"]//2] = "|" 
-    u[C] = "*"
-    x = []
-    for i in [a,b,c,d,e]:
-        x.append(config.the["Fmt"].format(i))
-    rx['show'] = ''.join(u) + str(x)
+        for i in range(0, config.the['width'] + 1):
+            u.append(" ")
+        a, b, c, d, e = at(.1), at(.3), at(.5), at(.7), at(.9)
+        A, B, C, D, E = pos(a), pos(b), pos(c), pos(d), pos(e)
+
+        for i in range(A, B + 1):
+            u[i] = "-"
+        for i in range(D, E + 1):
+            u[i] = "-"
+
+        u[config.the['width']//2] = "|"
+        u[C] = "*"
+
+        rx["show"] = rx["show"] + ''.join(u) + "{" + config.the["Fmt"].format(a)
+        for x in [b, c, d, e]:
+            rx["show"]= rx["show"] + ", " + config.the["Fmt"].format(x)
+        rx["show"] = rx["show"] + "}"
     return rxs
